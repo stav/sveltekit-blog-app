@@ -22,12 +22,12 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="User">
-    <FormField label="Username" name="username">
+  <AdminForm {formItem} name="Client">
+    <FormField label="Company Name" name="company_name">
       <input
         type="text"
-        name="username"
-        value={formItem.username}
+        name="company_name"
+        value={formItem.company_name}
         class={t.input}
       />
     </FormField>
@@ -54,63 +54,51 @@
       <input type="text" name="email" value={formItem.email} class={t.input} />
     </FormField>
 
-    <FormField label="Avatar" name="avatar_src">
-      <input
-        type="text"
-        name="avatar_src"
-        value={formItem.avatar_src}
-        class={t.input}
-      />
-    </FormField>
-
-    <FormField label="Role" name="role">
-      <select name="role" class={t.input}>
-        <option value="user" selected={formItem.role == "user"}>User</option>
-        <option value="admin" selected={formItem.role == "admin"}>Admin</option>
+    <FormField label="Status" name="status">
+      <select name="status" class={t.input}>
+        <option value="active"Active={formItem.role == "active"}>Active</option>
+        <option value="archived" selected={formItem.role == "archived"}>Archived</option>
       </select>
     </FormField>
   </AdminForm>
 {/if}
 
-<AdminPage title="Users" description="Manage users">
+<AdminPage title="Clients" description="Manage clients">
   <button
     on:click={() =>
       (formItem = {
         id: null,
-        username: "",
+        company_name: "",
         first_name: "",
         last_name: "",
         email: "",
-        avatar_src: "",
-        role: "user",
+        phone: "",
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+        status: "active",
       })}
     slot="add_button"
     type="button"
-    class={t.blue_button}>New User</button
+    class={t.blue_button}>New Client</button
   >
   <thead class="bg-gray-100" slot="thead">
     <tr>
-      <th class={t.first_header_column}>Username</th>
+      <th class={t.first_header_column}>Company Name</th>
       <th class={t.header_column}>First Name</th>
       <th class={t.header_column}>Last Name</th>
       <th class={t.header_column}>Email</th>
-      <th class={t.header_column}>Avatar</th>
-      <th class={t.header_column}>Role</th>
       <th class={t.header_column} />
     </tr>
   </thead>
   <tbody class="bg-white" slot="tbody">
     {#each dbData as item, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.first_tbody_column}>{item.username}</td>
+        <td class={t.first_tbody_column}>{item.company_name}</td>
         <td class={t.tbody_column}>{item.first_name || ""}</td>
         <td class={t.tbody_column}>{item.last_name || ""}</td>
         <td class={t.tbody_column}>{item.email}</td>
-        <td class={t.tbody_column}
-          ><img src={item.avatar_src} class="rounded-full" alt="" width="35" /></td
-        >
-        <td class={t.tbody_column}>{item.role}</td>
-
         <td class={t.tbody_action_column}>
           <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
             >Edit</a

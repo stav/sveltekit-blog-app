@@ -1,6 +1,6 @@
 <script>
   import { page } from "$app/stores"
-  import { t, all } from "$lib/tailwind.js"
+  import { t } from "$lib/tailwind.js"
   import { enhance } from "$app/forms"
   import FormMessage from "$lib/form-message.svelte"
   export let data

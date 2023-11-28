@@ -1,5 +1,5 @@
 <script>
-  import { all, t } from "$lib/tailwind.js"
+  import { t } from "$lib/tailwind.js"
   import FormMessage from "$lib/form-message.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import FormField from "$lib/form-field.svelte"
