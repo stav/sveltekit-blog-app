@@ -4,12 +4,12 @@ import e from "../../../dbschema/edgeql-js/index.mjs"
 import { IsReadonlyMode } from "$lib/config.js"
 export { e }
 
-export let client = edgedb.createClient()
+export let edbc = edgedb.createClient()
 
 class Database {
   static async select(params) {
     const query = e.select(this.type, params)
-    return await query.run(client)
+    return await query.run(edbc)
   }
   static select_query(params) {
     return e.select(this.type, params)
@@ -25,25 +25,25 @@ class Database {
       return {}
     }
     const query = e.insert(this.type, params)
-    return await query.run(client)
+    return await query.run(edbc)
   }
   static async insert_in_readonly_mode(params) {
     const query = e.insert(this.type, params)
-    return await query.run(client)
+    return await query.run(edbc)
   }
   static async update(params) {
     if (IsReadonlyMode()) {
       return {}
     }
     const query = e.update(this.type, params)
-    return await query.run(client)
+    return await query.run(edbc)
   }
   static async delete(params) {
     if (IsReadonlyMode()) {
       return {}
     }
     const query = e.delete(this.type, params)
-    return await query.run(client)
+    return await query.run(edbc)
   }
 }
 
