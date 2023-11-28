@@ -1,7 +1,8 @@
 module default {
+
   type Post extending HasTimestamp {
-    required property title -> str; 
-    required property slug -> str { constraint exclusive; }; 
+    required property title -> str;
+    required property slug -> str { constraint exclusive; };
     required property content -> str;
     property snippet -> str;
     required link author -> User;
@@ -15,7 +16,7 @@ module default {
     required link author -> User;
     required link post -> Post;
   }
-  
+
   type Tag {
     required property name -> str { constraint exclusive; }
   }
@@ -25,12 +26,29 @@ module default {
     required property username -> str { constraint exclusive; };
     property first_name -> str;
     property last_name -> str;
-    property password_hash -> str ;
+    property password_hash -> str;
     property user_auth_token -> str { constraint exclusive; };
     property avatar_src -> str;
     property full_name := .first_name ++ ' ' ++ .last_name;
     property role -> Role {
       default := 'user';
+    }
+  }
+
+  type Client extending HasTimestamp {
+    property email -> str;
+    property phone -> str;
+    property company_name -> str;
+    property first_name -> str;
+    property last_name -> str;
+    property full_name := .first_name ++ ' ' ++ .last_name;
+    property street -> str;
+    property city -> str;
+    property state -> str;
+    property zip -> str;
+    property address := .street ++ ', ' ++ .city ++ ', ' ++ .state ++ ' ' ++ .zip;
+    property status -> Status {
+      default := 'active';
     }
   }
 
@@ -41,4 +59,5 @@ module default {
   }
 
   scalar type Role extending enum <"admin", "user">;
+  scalar type Status extending enum <"active", "archived">;
 }

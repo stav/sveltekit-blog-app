@@ -62,3 +62,7 @@ export class Post extends Database {
 export class User extends Database {
   static type = e.User
 }
+
+export class Client extends Database {
+  static type = e.Client
+}
