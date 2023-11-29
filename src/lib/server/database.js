@@ -66,3 +66,7 @@ export class User extends Database {
 export class Client extends Database {
   static type = e.Client
 }
+
+export class Job extends Database {
+  static type = e.Job
+}

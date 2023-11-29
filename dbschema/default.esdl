@@ -47,9 +47,18 @@ module default {
     property state -> str;
     property zip -> str;
     property address := .street ++ ', ' ++ .city ++ ', ' ++ .state ++ ' ' ++ .zip;
+    multi link jobs := .<client[is Job];
     property status -> Status {
       default := 'active';
     }
+  }
+
+  type Job extending HasTimestamp {
+    required link client -> Client;
+    multi link tags -> Tag;
+    property title -> str;
+    property beg_date -> str;
+    property end_date -> str;
   }
 
   abstract type HasTimestamp {
