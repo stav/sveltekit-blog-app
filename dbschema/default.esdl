@@ -56,9 +56,13 @@ module default {
   type Job extending HasTimestamp {
     required link client -> Client;
     multi link tags -> Tag;
-    property title -> str;
+    multi link costs := .<job[is Cost];
+    multi link payments := .<job[is Payment];
+    property total_cost := sum(to_decimal(.costs.amount));
+    property total_earn := sum(to_decimal(.payments.amount));
     property beg_date -> str;
     property end_date -> str;
+    property title -> str;
   }
 
   type Cost extending HasTimestamp {

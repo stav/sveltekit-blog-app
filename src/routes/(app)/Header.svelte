@@ -28,6 +28,8 @@
           <a href="/user/sign-in" class={t.white_button}>Sign In</a>
           <a href="/user/register" class={t.white_button}>Register</a>
         {:else}
+          <a class={t.white_button} href="/jobs">Jobs</a>
+
           {#if $page.data.user.role === "admin"}
             <a href="/admin" class={t.white_button}>Admin</a>
           {/if}

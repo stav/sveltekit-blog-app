@@ -23,15 +23,6 @@
 
 {#if formItem}
   <AdminForm {formItem} name="Client">
-    <FormField label="Company Name" name="company_name">
-      <input
-        type="text"
-        name="company_name"
-        value={formItem.company_name}
-        class={t.input}
-      />
-    </FormField>
-
     <FormField label="First Name" name="first_name">
       <input
         type="text"
@@ -50,8 +41,8 @@
       />
     </FormField>
 
-    <FormField label="Email" name="email">
-      <input type="text" name="email" value={formItem.email} class={t.input} />
+    <FormField label="Phone" name="phone">
+      <input type="text" name="phone" value={formItem.phone} class={t.input} />
     </FormField>
 
     <FormField label="Status" name="status">
@@ -85,20 +76,18 @@
   >
   <thead class="bg-gray-100" slot="thead">
     <tr>
-      <th class={t.first_header_column}>Company Name</th>
       <th class={t.header_column}>First Name</th>
       <th class={t.header_column}>Last Name</th>
-      <th class={t.header_column}>Email</th>
+      <th class={t.header_column}>Phone</th>
       <th class={t.header_column} />
     </tr>
   </thead>
   <tbody class="bg-white" slot="tbody">
     {#each dbData as item, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.first_tbody_column}>{item.company_name}</td>
         <td class={t.tbody_column}>{item.first_name || ""}</td>
         <td class={t.tbody_column}>{item.last_name || ""}</td>
-        <td class={t.tbody_column}>{item.email}</td>
+        <td class={t.tbody_column}>{item.phone}</td>
         <td class={t.tbody_action_column}>
           <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
             >Edit</a
