@@ -1,107 +1,18 @@
-import { User, Post, Comment, Tag } from "$lib/server/database.js"
-import bcrypt from "bcryptjs"
+// @ts-nocheck
+import { Post, Tag, User } from "$lib/server/database.js"
+import { selectTagId, selectUserId } from "./db"
 
-export async function seed() {
-  console.log("Seeding database...")
+// We assume the tags & users already exist
+export async function addPosts() {
 
-  // uncomment to clear database
-  // await Comment.delete({})
-  // await Post.delete({})
-  // await User.delete({})
-  // await Tag.delete({})
+  console.log('Adding posts...')
 
-  let addTag = async (name) => {
-    let result = await Tag.insert_in_readonly_mode({ name: name })
-    console.log("Added tag: " + name, result.id)
-    return result.id
-  }
+  const sveltekit_tag_id = await selectTagId("SvelteKit")
+  const tailwind_tag_id = await selectTagId("Tailwind")
+  const database_tag_id = await selectTagId("Database")
+  const edgedb_tag_id = await selectTagId("EdgeDB")
 
-  let sveltekit_tag_id = await addTag("SvelteKit")
-  let tailwind_tag_id = await addTag("Tailwind")
-  let edgedb_tag_id = await addTag("EdgeDB")
-  let database_tag_id = await addTag("Database")
-
-  let password_hash = await bcrypt.hash("password", 10)
-  let addUser = async (user) => {
-    if (!user.role) {
-      user.role = "user"
-    }
-
-    user.avatar_src = "/images/avatars/" + user.username + ".jpeg"
-    user.user_auth_token = crypto.randomUUID() // these hashes used for read-only mode
-
-    if (!user.email) {
-      user.email = user.username + "@example.com"
-    }
-
-    user.password_hash = password_hash
-    let result = await User.insert_in_readonly_mode(user)
-    console.log("Added user: " + user.username, result.id)
-    return result.id
-  }
-
-  let victor_id = await addUser({
-    username: "victor",
-    first_name: "Victor",
-    last_name: "VectorBot",
-    email: "admin@example.com",
-    role: "admin",
-  })
-  let zander_id = await addUser({
-    username: "zander",
-    first_name: "Zander",
-    last_name: "ByteBot",
-    role: "admin",
-  })
-  let siri_id = await addUser({
-    username: "siri",
-    first_name: "Siri",
-    last_name: "SimpatiBot",
-    role: "admin",
-  })
-  let blaze_id = await addUser({
-    username: "blaze",
-    first_name: "Blaze",
-    last_name: "CoggBot",
-  })
-  let chip_id = await addUser({
-    username: "chip",
-    first_name: "Chip",
-    last_name: "BlitzBot",
-  })
-  let ava_id = await addUser({
-    username: "ava",
-    first_name: "Ava",
-    last_name: "TarBot",
-  })
-  let iris_id = await addUser({
-    username: "iris",
-    first_name: "Iris",
-    last_name: "IntelliBot",
-  })
-  let gigi_id = await addUser({
-    username: "gigi",
-    first_name: "Gigi",
-    last_name: "GigaBot",
-  })
-
-  let addPost = async (post) => {
-    let result = await Post.insert_in_readonly_mode({
-      title: post.title,
-      slug: post.slug,
-      content: post.content,
-      snippet: post.snippet,
-      image_src: post.image_src,
-      author: User.select_query({
-        filter_single: { id: post.author },
-      }),
-      tags: Tag.select_query_by_ids(post.tags),
-    })
-    console.log("Added post: " + post.title, result.id)
-    return result.id
-  }
-
-  let tailwind_post_id = await addPost({
+  await addPost({
     title: "How Tailwind's Utility-First Design Improves CSS Development",
     slug: "how-tailwind's-utility-first-design-improves-css-development",
     content:
@@ -110,10 +21,10 @@ export async function seed() {
       "Tailwind CSS is a popular CSS framework that provides a utility-first approach to CSS development, which offers many benefits for web developers. In this article, we will explore five approaches to CSS development and how Tailwind uses the fifth approach to help developers create visually appealing websites quickly and efficiently.",
     image_src: "/images/desk1.avif",
     tags: [tailwind_tag_id],
-    author: victor_id,
+    author: await selectUserId("victor"),
   })
 
-  let sveltekit_post_id = await addPost({
+  await addPost({
     title: "SvelteKit Simplifies Web App Development",
     slug: "sveltekit-simplifies-web-app-development",
     content:
@@ -122,10 +33,10 @@ export async function seed() {
       "SvelteKit is a web framework built on top of the Svelte compiler that makes it easy to build fast, dynamic, and reactive web applications. It is an open-source project that provides developers with a set of tools and best practices for building server-side rendered web applications.",
     image_src: "/images/desk2.avif",
     tags: [sveltekit_tag_id],
-    author: zander_id,
+    author: await selectUserId("zander"),
   })
 
-  let edgedb_post_id = await addPost({
+  await addPost({
     title: "The Rise of EdgeDB: A New Era in Database Technology",
     slug: "the-rise-of-edgedb-a-new-era-in-database-technology",
     content:
@@ -134,61 +45,27 @@ export async function seed() {
       "EdgeDB is a graph-relational database that has been under development for over a decade. The journey began in 2008 when Yury and Elvis, the co-founders of MagicStack, started incubating homegrown tools to address the problems they encountered on every project.",
     image_src: "/images/desk3.avif",
     tags: [edgedb_tag_id, database_tag_id],
-    author: siri_id,
+    author: await selectUserId("siri"),
   })
 
-  let addComment = async (comment) => {
-    let result = await Comment.insert_in_readonly_mode({
-      content: comment.content,
-      author: User.select_query({
-        filter_single: { id: comment.author },
-      }),
-      post: Post.select_query({
-        filter_single: { id: comment.post },
-      }),
-    })
-    console.log("added comment", comment.content, result)
-  }
+  console.log('added posts.')
+}
 
-  await addComment({
-    content:
-      "I used to think web development was hard, but then I discovered SvelteKit and now I'm pretty sure I'm a genius.",
-    author: zander_id,
-    post: sveltekit_post_id,
+/**
+ * @param {Post} post
+ * @returns void
+ */
+async function addPost(post) {
+  const result = await Post.insert_in_readonly_mode({
+    title: post.title,
+    slug: post.slug,
+    content: post.content,
+    snippet: post.snippet,
+    image_src: post.image_src,
+    author: User.select_query({
+      filter_single: { id: post.author },
+    }),
+    tags: Tag.select_query_by_ids(post.tags),
   })
-
-  await addComment({
-    content:
-      "SvelteKit is so easy to use, it's like a walk in the park. Except the park is filled with unicorns and rainbows.",
-    author: gigi_id,
-    post: sveltekit_post_id,
-  })
-
-  await addComment({
-    content:
-      "SQL may have a 1732-page manual, but EdgeDB only needs one word: awesome.",
-    author: iris_id,
-    post: edgedb_post_id,
-  })
-
-  await addComment({
-    content:
-      "I'm pretty sure EdgeDB was created by a secret society of database ninjas.",
-    author: chip_id,
-    post: edgedb_post_id,
-  })
-
-  await addComment({
-    content:
-      "I'm convinced Tailwind CSS was sent from the future to save us from CSS-related headaches.",
-    author: ava_id,
-    post: tailwind_post_id,
-  })
-
-  await addComment({
-    content:
-      "If only I had Tailwind CSS when I was designing my Myspace page in 2006.",
-    author: chip_id,
-    post: tailwind_post_id,
-  })
+  console.log("Added post: " + post.title, result.id)
 }
