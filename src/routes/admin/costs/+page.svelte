@@ -19,21 +19,25 @@
   if (form?.error) {
     formItem = form.form
   }
+
+  /**
+   * @param {any} item
+   * @returns string
+   */
+  function desc(item) {
+    const maxDisplayLength = 30
+    let d = item.description || ''
+    if (d.length > maxDisplayLength) {
+      d = d.slice(0, maxDisplayLength) + "..."
+    }
+    return d
+  }
 </script>
 
 <FormMessage {form} />
 
 {#if formItem}
   <AdminForm {formItem} name="Cost">
-    <FormField label="Description" name="description">
-      <input
-        type="text"
-        name="description"
-        value={formItem.description}
-        class={t.input}
-      />
-    </FormField>
-
     <FormField label="Job" name="job">
       <select name="job" class={t.input}>
         {#each data.jobs as job}
@@ -42,6 +46,15 @@
           >
         {/each}
       </select>
+    </FormField>
+
+    <FormField label="Description" name="description">
+      <input
+        type="text"
+        name="description"
+        value={formItem.description}
+        class={t.input}
+      />
     </FormField>
 
     <FormField label="Job Date" name="job_date">
@@ -90,7 +103,7 @@
   <tbody class="bg-white" slot="tbody">
     {#each dbData as item, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.first_tbody_column}>{item.description}</td>
+        <td class={t.first_tbody_column} title="{item.description}">{desc(item)}</td>
         <td class={t.tbody_column}>{item.job.title || ""}</td>
         <td class={t.tbody_column}>{item.job_date || ""}</td>
         <td class={t.tbody_column}>{item.amount}</td>

@@ -6,7 +6,7 @@ export function load({ cookies }) {
   return {
     items: Payment.select((/** @type { Payment } */ payment) => ({
       id: true,
-      job: { title: true},
+      job: {title: true, id: true},
       description: true,
       date: true,
       amount: true,

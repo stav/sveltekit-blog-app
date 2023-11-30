@@ -6,14 +6,14 @@ export function load({ cookies }) {
   return {
     items: Cost.select((/** @type { Cost } */ cost) => ({
       id: true,
-      job: { title: true},
+      job: { title: true, id: true},
       description: true,
       purchase_date: true,
       job_date: true,
       vendor: true,
       amount: true,
       tax: true,
-      order_by: cost.job_date,
+      order_by: [cost.job, cost.job_date],
     })),
     jobs: Job.select((job) => ({
       id: true,

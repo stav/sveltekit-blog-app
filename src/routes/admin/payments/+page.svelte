@@ -25,15 +25,6 @@
 
 {#if formItem}
   <AdminForm {formItem} name="Payment">
-    <FormField label="Description" name="description">
-      <input
-        type="text"
-        name="description"
-        value={formItem.description}
-        class={t.input}
-      />
-    </FormField>
-
     <FormField label="Job" name="job">
       <select name="job" class={t.input}>
         {#each data.jobs as job}
@@ -44,11 +35,20 @@
       </select>
     </FormField>
 
-    <FormField label="Job Date" name="job_date">
+    <FormField label="Description" name="description">
       <input
         type="text"
-        name="job_date"
-        value={formItem.job_date}
+        name="description"
+        value={formItem.description}
+        class={t.input}
+      />
+    </FormField>
+
+    <FormField label="Date" name="date">
+      <input
+        type="text"
+        name="date"
+        value={formItem.date}
         class={t.input}
       />
     </FormField>
