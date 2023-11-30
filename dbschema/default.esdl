@@ -61,6 +61,25 @@ module default {
     property end_date -> str;
   }
 
+  type Cost extending HasTimestamp {
+    required link job -> Job;
+    multi link tags -> Tag;
+    property description -> str;
+    property purchase_date -> str;
+    property job_date -> str;
+    property vendor -> str;
+    property amount -> str;
+    property tax -> str;
+  }
+
+  type Payment extending HasTimestamp {
+    required link job -> Job;
+    multi link tags -> Tag;
+    property description -> str;
+    property amount -> str;
+    property date -> str;
+  }
+
   abstract type HasTimestamp {
     required property created_at -> datetime {
       default := (datetime_current());

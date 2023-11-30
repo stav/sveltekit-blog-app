@@ -70,3 +70,11 @@ export class Client extends Database {
 export class Job extends Database {
   static type = e.Job
 }
+
+export class Cost extends Database {
+  static type = e.Cost
+}
+
+export class Payment extends Database {
+  static type = e.Payment
+}

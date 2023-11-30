@@ -1,23 +1,25 @@
 // @ts-nocheck
-import { Client, Job, Tag } from "$lib/server/database.js"
+import { Job, Tag, Cost } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
 export function load({ cookies }) {
   return {
-    items: Job.select((job) => ({
+    items: Cost.select((/** @type { Cost } */ cost) => ({
       id: true,
-      client: true,
-      client: { full_name: true },
-      title: true,
-      tags: true,
-      beg_date: true,
-      end_date: true,
-      order_by: job.client.full_name,
+      job: { title: true},
+      description: true,
+      purchase_date: true,
+      job_date: true,
+      vendor: true,
+      amount: true,
+      tax: true,
+      order_by: cost.job_date,
     })),
-    clients: Client.select((client) => ({
+    jobs: Job.select((job) => ({
       id: true,
-      full_name: true,
-      order_by: client.full_name,
+      title: true,
+      client: true,
+      order_by: job.full_name,
     })),
     tags: Tag.select((tag) => ({
       id: true,
@@ -29,30 +31,40 @@ export function load({ cookies }) {
 
 let getForm = (data) => {
   return {
-    title: data.get("title"),
-    client: data.get("client"),
-    beg_date: data.get("beg_date"),
-    end_date: data.get("end_date"),
+    job: data.get("job"),
+    description: data.get("description"),
+    purchase_date: data.get("purchase_date"),
+    job_date: data.get("job_date"),
+    vendor: data.get("vendor"),
+    amount: data.get("amount"),
+    tax: data.get("tax"),
   }
 }
 
-let getJob = (data) => {
+let getCost = (data) => {
   let f = getForm(data)
+  console.log('f.job', f.job)
+  const job = Job.select_query({ filter_single: { id: f.job } })
+  console.log({job})
+
   return {
-    title: f.title,
-    beg_date: f.beg_date,
-    end_date: f.end_date,
-    client: Client.select_query({
-      filter_single: { id: f.client },
-    }),
+    description: f.description,
+    purchase_date: f.purchase_date,
+    job_date: f.job_date,
+    vendor: f.vendor,
+    amount: f.amount,
+    tax: f.tax,
+    job,
   }
 }
 
 export const actions = {
   create: async ({ request }) => {
     const data = await getBody(request)
+    const cost = getCost(data)
+    console.log({cost})
     try {
-      await Job.insert(getJob(data))
+      await Cost.insert(cost)
     } catch (error) {
       return { error: error.message, form: getForm(data) }
     }
@@ -61,9 +73,9 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Job.update((job) => ({
+      await Cost.update((job) => ({
         filter_single: { id },
-        set: getJob(data),
+        set: getCost(data),
       }))
     } catch (error) {
       let form = getForm(data)
@@ -77,7 +89,7 @@ export const actions = {
     console.info('jobs (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
     try {
-      result = await Job.delete({ filter_single: { id } })
+      result = await Cost.delete({ filter_single: { id } })
     } catch (error) {
       return { error: error.message }
     }

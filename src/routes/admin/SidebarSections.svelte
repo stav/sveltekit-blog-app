@@ -9,6 +9,8 @@
 
   let items = [
     { href: "/", icon: "outline/home", label: "Frontend" },
+    { href: "/admin/payments", icon: "outline/chart-bar", label: "Payments" },
+    { href: "/admin/costs", icon: "outline/chart-bar", label: "Costs" },
     { href: "/admin/jobs", icon: "outline/chart-bar", label: "Jobs" },
     { href: "/admin/clients", icon: "outline/users", label: "Clients" },
     { href: "/admin/users", icon: "outline/users", label: "Users" },

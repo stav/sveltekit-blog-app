@@ -1,23 +1,22 @@
 // @ts-nocheck
-import { Client, Job, Tag } from "$lib/server/database.js"
+import { Job, Tag, Payment } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
 export function load({ cookies }) {
   return {
-    items: Job.select((job) => ({
+    items: Payment.select((/** @type { Payment } */ payment) => ({
       id: true,
-      client: true,
-      client: { full_name: true },
-      title: true,
-      tags: true,
-      beg_date: true,
-      end_date: true,
-      order_by: job.client.full_name,
+      job: { title: true},
+      description: true,
+      date: true,
+      amount: true,
+      order_by: payment.date,
     })),
-    clients: Client.select((client) => ({
+    jobs: Job.select((job) => ({
       id: true,
-      full_name: true,
-      order_by: client.full_name,
+      title: true,
+      client: true,
+      order_by: job.full_name,
     })),
     tags: Tag.select((tag) => ({
       id: true,
@@ -29,30 +28,34 @@ export function load({ cookies }) {
 
 let getForm = (data) => {
   return {
-    title: data.get("title"),
-    client: data.get("client"),
-    beg_date: data.get("beg_date"),
-    end_date: data.get("end_date"),
+    job: data.get("job"),
+    description: data.get("description"),
+    date: data.get("date"),
+    amount: data.get("amount"),
   }
 }
 
-let getJob = (data) => {
+let getPayment = (data) => {
   let f = getForm(data)
+  console.log('f.job', f.job)
+  const job = Job.select_query({ filter_single: { id: f.job } })
+  console.log({job})
+
   return {
-    title: f.title,
-    beg_date: f.beg_date,
-    end_date: f.end_date,
-    client: Client.select_query({
-      filter_single: { id: f.client },
-    }),
+    description: f.description,
+    date: f.date,
+    amount: f.amount,
+    job,
   }
 }
 
 export const actions = {
   create: async ({ request }) => {
     const data = await getBody(request)
+    const payment = getPayment(data)
+    console.log({payment})
     try {
-      await Job.insert(getJob(data))
+      await Payment.insert(payment)
     } catch (error) {
       return { error: error.message, form: getForm(data) }
     }
@@ -61,9 +64,9 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Job.update((job) => ({
+      await Payment.update((job) => ({
         filter_single: { id },
-        set: getJob(data),
+        set: getPayment(data),
       }))
     } catch (error) {
       let form = getForm(data)
@@ -77,7 +80,7 @@ export const actions = {
     console.info('jobs (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
     try {
-      result = await Job.delete({ filter_single: { id } })
+      result = await Payment.delete({ filter_single: { id } })
     } catch (error) {
       return { error: error.message }
     }
