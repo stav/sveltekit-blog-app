@@ -1,9 +1,9 @@
 <script>
   import { t } from "$lib/tailwind.js"
 
-  import SvgIcon from "$lib/SvgIcons.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import AdminActs from "$lib/admin/actions.svelte"
   import FormField from "$lib/form-field.svelte"
   import FormMessage from "$lib/form-message.svelte"
 
@@ -132,15 +132,7 @@
         <td class={t.tbody_column}>{cost.purchase_date || ""}</td>
         <td class={t.tbody_column}>{cost.amount}</td>
         <td class={t.tbody_action_column}>
-          <button on:click={() => (formItem = cost)} class={t.blue_button} title="Edit {cost.description}">
-            <SvgIcon icon="pencil" htmlClass="h-6 w-6 text-white" />
-          </button>
-          <form action="?/delete" method="POST" class="inline">
-            <input type="hidden" name="id" value={cost.id} />
-            <button class="{t.danger_button}" type="submit" title="Delete {cost.description}">
-              <SvgIcon icon="trash" htmlClass="h-6 w-6 text-white" />
-            </button>
-          </form>
+          <AdminActs bind:form={formItem} item={cost} />
         </td>
       </tr>
     {/each}

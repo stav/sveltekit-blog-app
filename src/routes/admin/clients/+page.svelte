@@ -3,9 +3,10 @@
   import FormMessage from "$lib/form-message.svelte"
   import { t } from "$lib/tailwind.js"
 
-  import AdminPage from "$lib/admin/page.svelte"
   import FormField from "$lib/form-field.svelte"
+  import AdminPage from "$lib/admin/page.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import AdminActs from "$lib/admin/actions.svelte"
 
   export let data
   let dbData = data.items
@@ -89,13 +90,7 @@
         <td class={t.tbody_column}>{item.last_name || ""}</td>
         <td class={t.tbody_column}>{item.phone}</td>
         <td class={t.tbody_action_column}>
-          <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
-            >Edit</a
-          >
-          <form action="?/delete" method="POST" class="inline">
-            <input type="hidden" name="id" value={item.id} />
-            <input type="submit" class={t.danger_button} value="Delete" />
-          </form>
+          <AdminActs bind:form={formItem} {item} />
         </td>
       </tr>
     {/each}
