@@ -9,9 +9,9 @@
 
   let items = [
     { href: "/", icon: "outline/home", label: "Frontend" },
-    { href: "/admin/payments", icon: "outline/chart-bar", label: "Payments" },
-    { href: "/admin/costs", icon: "outline/chart-bar", label: "Costs" },
-    { href: "/admin/jobs", icon: "outline/chart-bar", label: "Jobs" },
+    { href: "/admin/payments", icon: "banknotes", label: "Payments" },
+    { href: "/admin/costs", icon: "currency", label: "Costs" },
+    { href: "/admin/jobs", icon: "wrench", label: "Jobs" },
     { href: "/admin/clients", icon: "outline/users", label: "Clients" },
     { href: "/admin/users", icon: "outline/users", label: "Users" },
     { href: "/admin/tags", icon: "outline/key", label: "Tags" },

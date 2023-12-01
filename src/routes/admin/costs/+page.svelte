@@ -1,10 +1,11 @@
 <script>
-  import FormMessage from "$lib/form-message.svelte"
   import { t } from "$lib/tailwind.js"
 
+  import SvgIcon from "$lib/SvgIcons.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import FormField from "$lib/form-field.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import FormMessage from "$lib/form-message.svelte"
 
   export let data
 
@@ -123,12 +124,14 @@
         <td class={t.tbody_column}>{cost.job_date || ""}</td>
         <td class={t.tbody_column}>{cost.amount}</td>
         <td class={t.tbody_action_column}>
-          <a on:click={() => (formItem = cost)} href="#" class={t.blue_button}
-            >Edit</a
-          >
+          <button on:click={() => (formItem = cost)} class={t.blue_button} title="Edit {cost.description}">
+            <SvgIcon icon="pencil" htmlClass="h-6 w-6 text-white" />
+          </button>
           <form action="?/delete" method="POST" class="inline">
             <input type="hidden" name="id" value={cost.id} />
-            <input type="submit" class={t.danger_button} value="Delete" />
+            <button class="{t.danger_button}" type="submit" title="Delete {cost.description}">
+              <SvgIcon icon="trash" htmlClass="h-6 w-6 text-white" />
+            </button>
           </form>
         </td>
       </tr>
