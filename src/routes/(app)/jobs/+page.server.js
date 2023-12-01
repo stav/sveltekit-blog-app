@@ -1,7 +1,6 @@
 import { Job } from "$lib/server/database.js"
 
 export function load({ url }) {
-
   // @ts-ignore
   const jobSelection = (job) => {
     return {

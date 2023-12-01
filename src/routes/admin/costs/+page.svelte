@@ -32,6 +32,21 @@
     return d
   }
 
+  /**
+   * @param {any} cost
+   * @returns string
+   */
+  function jobTitle(cost) {
+    const maxDisplayLength = 18
+    let title = cost.job.title || ''
+    if (title.length > maxDisplayLength) {
+      const crop = title.slice(0, maxDisplayLength)
+      title = `<span title="${title}">${crop}...</span>`
+
+    }
+    return title
+  }
+
   let selected = "bg-sky-600 text-white"
   let unselected = "bg-sky-200 text-sky-900"
 
@@ -52,7 +67,7 @@
       <select name="job" class={t.input}>
         {#each data.jobs as job}
           <option selected={checkJob(job)} value={job.id}
-            >{job.title}</option
+            >{job.client.full_name} | {job.title}</option
           >
         {/each}
       </select>
@@ -97,7 +112,7 @@
         {#each data.jobs as job}
           <a href={"?job=" + encodeURIComponent(job.id)} on:click={()=>(formItem = null)}
             class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
-              data.job == job.id ? selected : unselected}">{job.title}</a>
+              data.job == job.id ? selected : unselected}">{job.title.slice(0, 12)}</a>
         {/each}
       </div>
     </div>
@@ -118,6 +133,7 @@
   <thead class="bg-gray-100" slot="thead">
     <tr>
       <th class={t.first_header_column}>Description</th>
+      <th class={t.header_column}>Client</th>
       <th class={t.header_column}>Job</th>
       <th class={t.header_column}>Date</th>
       <th class={t.header_column}>Amount</th>
@@ -127,8 +143,9 @@
   <tbody class="bg-white" slot="tbody">
     {#each data.costs as cost, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.first_tbody_column} title="{cost.description}">{desc(cost)}</td>
-        <td class={t.tbody_column}>{cost.job.title || ""}</td>
+        <td class={t.first_tbody_column}>{desc(cost)}</td>
+        <td class={t.tbody_column}>{cost.job.client.full_name}</td>
+        <td class={t.tbody_column}>{@html jobTitle(cost)}</td>
         <td class={t.tbody_column}>{cost.purchase_date || ""}</td>
         <td class={t.tbody_column}>{cost.amount}</td>
         <td class={t.tbody_action_column}>

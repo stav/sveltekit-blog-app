@@ -21,6 +21,19 @@
    function PCT (val) {
     return val.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0});
   }
+
+  /**
+   * @param {any} job
+   * @returns string
+   */
+   function title(job) {
+    const maxDisplayLength = 20
+    let d = job.title || ''
+    if (d.length > maxDisplayLength) {
+      d = d.slice(0, maxDisplayLength) + "..."
+    }
+    return d
+  }
 </script>
 
 <svelte:head>
@@ -60,7 +73,7 @@
             <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
               <td class={t.tbody_column}>{job.beg_date}</td>
               <td class={t.tbody_column}>{job.client.full_name}</td>
-              <td class={t.tbody_column}>{job.title}</td>
+              <td class={t.tbody_column}>{title(job)}</td>
               <td class={t.tbody_colrit}>({job.payments.length}) {USD(job.total_earn)}</td>
               <td class={t.tbody_colrit}>({job.costs.length})    {USD(job.total_cost)}</td>
               <td class={t.tbody_colrit}>{USD(job.total_earn - job.total_cost)}</td>

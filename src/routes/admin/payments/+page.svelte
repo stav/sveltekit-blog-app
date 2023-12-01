@@ -20,6 +20,20 @@
   if (form?.error) {
     formItem = form.form
   }
+
+  /**
+   * @param {any} job
+   * @returns string
+   */
+   function title(job) {
+    const maxDisplayLength = 20
+    let title = job.title.trim() || ''
+    if (title.length > maxDisplayLength) {
+      const crop = title.slice(0, maxDisplayLength)
+      title = `<span title="${job.title}">${crop}...</span>`
+    }
+    return title
+  }
 </script>
 
 <FormMessage {form} />
@@ -30,7 +44,7 @@
       <select name="job" class={t.input}>
         {#each data.jobs as job}
           <option selected={formItem?.job?.id == job.id} value={job.id}
-            >{job.title}</option
+            >{job.client.full_name} | {job.title}</option
           >
         {/each}
       </select>
@@ -92,7 +106,7 @@
     {#each dbData as item, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
         <td class={t.first_tbody_column}>{item.description}</td>
-        <td class={t.tbody_column}>{item.job.title || ""}</td>
+        <td class={t.tbody_column}>{@html title(item.job)}</td>
         <td class={t.tbody_column}>{item.job_date || ""}</td>
         <td class={t.tbody_column}>{item.amount}</td>
         <td class={t.tbody_action_column}>
