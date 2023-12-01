@@ -49,10 +49,10 @@
             <th class={t.header_column}>Date</th>
             <th class={t.header_column}>Client</th>
             <th class={t.header_column}>Title</th>
-            <th class={t.header_column}>Earnings</th>
-            <th class={t.header_column}>Costs</th>
-            <th class={t.header_column}>Profit</th>
-            <th class={t.header_column}>Margin</th>
+            <th class={t.header_colrit}>Earnings</th>
+            <th class={t.header_colrit}>Costs</th>
+            <th class={t.header_colrit}>Profit</th>
+            <th class={t.header_colrit}>Margin</th>
           </tr>
         </thead>
         <tbody class="bg-white">
@@ -61,10 +61,10 @@
               <td class={t.tbody_column}>{job.beg_date}</td>
               <td class={t.tbody_column}>{job.client.full_name}</td>
               <td class={t.tbody_column}>{job.title}</td>
-              <td class={t.tbody_column}>{USD(job.total_earn)} ({job.payments.length})</td>
-              <td class={t.tbody_column}>{USD(job.total_cost)} ({job.costs.length})</td>
-              <td class={t.tbody_column}>{USD(job.total_earn - job.total_cost)}</td>
-              <td class={t.tbody_column}>{PCT((job.total_earn - job.total_cost) / job.total_earn)}</td>
+              <td class={t.tbody_colrit}>({job.payments.length}) {USD(job.total_earn)}</td>
+              <td class={t.tbody_colrit}>({job.costs.length})    {USD(job.total_cost)}</td>
+              <td class={t.tbody_colrit}>{USD(job.total_earn - job.total_cost)}</td>
+              <td class={t.tbody_colrit}>{PCT((job.total_earn - job.total_cost) / job.total_earn)}</td>
             </tr>
           {/each}
         </tbody>

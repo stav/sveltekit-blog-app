@@ -3,8 +3,8 @@
 
   import SvgIcon from "$lib/SvgIcons.svelte"
   import AdminPage from "$lib/admin/page.svelte"
-  import FormField from "$lib/form-field.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import FormField from "$lib/form-field.svelte"
   import FormMessage from "$lib/form-message.svelte"
 
   export let data
@@ -34,6 +34,14 @@
 
   let selected = "bg-sky-600 text-white"
   let unselected = "bg-sky-200 text-sky-900"
+
+  /** @param {{ id: any; }} job */
+  function checkJob(job) {
+    if (job.id == formItem?.job?.id) return true
+    if (job.id == data.job) return true
+    return false
+  }
+
 </script>
 
 <FormMessage {form} />
@@ -43,7 +51,7 @@
     <FormField label="Job" name="job">
       <select name="job" class={t.input}>
         {#each data.jobs as job}
-          <option selected={formItem?.job?.id == job.id} value={job.id}
+          <option selected={checkJob(job)} value={job.id}
             >{job.title}</option
           >
         {/each}
@@ -59,11 +67,11 @@
       />
     </FormField>
 
-    <FormField label="Job Date" name="job_date">
+    <FormField label="Date" name="job_date">
       <input
         type="text"
-        name="job_date"
-        value={formItem.job_date}
+        name="purchase_date"
+        value={formItem.purchase_date}
         class={t.input}
       />
     </FormField>
@@ -87,7 +95,7 @@
           class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
             data.job == null ? selected : unselected}">All</a>
         {#each data.jobs as job}
-          <a href={"?job=" + encodeURIComponent(job.id)}
+          <a href={"?job=" + encodeURIComponent(job.id)} on:click={()=>(formItem = null)}
             class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
               data.job == job.id ? selected : unselected}">{job.title}</a>
         {/each}
@@ -111,7 +119,7 @@
     <tr>
       <th class={t.first_header_column}>Description</th>
       <th class={t.header_column}>Job</th>
-      <th class={t.header_column}>Job Date</th>
+      <th class={t.header_column}>Date</th>
       <th class={t.header_column}>Amount</th>
       <th class={t.header_column} />
     </tr>
@@ -121,7 +129,7 @@
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
         <td class={t.first_tbody_column} title="{cost.description}">{desc(cost)}</td>
         <td class={t.tbody_column}>{cost.job.title || ""}</td>
-        <td class={t.tbody_column}>{cost.job_date || ""}</td>
+        <td class={t.tbody_column}>{cost.purchase_date || ""}</td>
         <td class={t.tbody_column}>{cost.amount}</td>
         <td class={t.tbody_action_column}>
           <button on:click={() => (formItem = cost)} class={t.blue_button} title="Edit {cost.description}">

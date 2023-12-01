@@ -19,9 +19,11 @@ export let t = {
   first_header_column:
     "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6",
   header_column: "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  header_colrit: "px-3 py-3.5 text-left text-sm font-semibold text-gray-900 text-right",
   first_tbody_column:
     "whitespace-nowrap py-4 pl-4 pr-3 text-sm medium text-gray-900 sm:pl-6",
   tbody_column: "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
+  tbody_colrit: "whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-right",
   tbody_column_wrap: "px-3 py-4 text-sm text-gray-500",
   tbody_action_column:
     "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6",
