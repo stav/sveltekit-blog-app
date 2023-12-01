@@ -1,10 +1,12 @@
 // @ts-nocheck
-import { Job, Tag, Cost } from "$lib/server/database.js"
+import { Job, Tag, Cost, e } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
-export function load({ cookies }) {
-  return {
-    items: Cost.select((/** @type { Cost } */ cost) => ({
+export function load({ url }) {
+  const job = url.searchParams.get("job")
+
+  const costSelection = (cost) => {
+    const selection = {
       id: true,
       job: { title: true, id: true},
       description: true,
@@ -14,7 +16,17 @@ export function load({ cookies }) {
       amount: true,
       tax: true,
       order_by: [cost.job, cost.job_date],
-    })),
+    }
+
+    if (job) {
+      selection.filter = e.op(cost.job.id, "=", e.uuid(job))
+    }
+
+    return selection
+  }
+
+  return {
+    costs: Cost.select(costSelection),
     jobs: Job.select((job) => ({
       id: true,
       title: true,
@@ -26,6 +38,7 @@ export function load({ cookies }) {
       name: true,
       order_by: tag.name,
     })),
+    job,
   }
 }
 

@@ -1,6 +1,12 @@
 <script>
-  export let title
-  export let description
+  /**
+   * @type {any}
+   */
+   export let title
+  /**
+   * @type {any}
+   */
+   export let description
 </script>
 
 <div class="px-4 sm:px-6 lg:px-8">
@@ -8,6 +14,9 @@
     <div class="sm:flex-auto">
       <h1 class="text-xl font-semibold text-gray-900">{title}</h1>
       <p class="mt-2 text-sm text-gray-700">{description}</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 flex-auto items-center">
+      <slot name="center-stock" />
     </div>
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
       <slot name="add_button" />

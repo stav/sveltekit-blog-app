@@ -7,10 +7,8 @@
   import AdminForm from "$lib/admin/form.svelte"
 
   export let data
-  let dbData = data.items
-  /**
-   * @type {any}
-   */
+
+  /** * @type {any} */
   let formItem = null
 
   /** @type {import('./$types').ActionData} */
@@ -21,17 +19,20 @@
   }
 
   /**
-   * @param {any} item
+   * @param {any} cost
    * @returns string
    */
-  function desc(item) {
+  function desc(cost) {
     const maxDisplayLength = 30
-    let d = item.description || ''
+    let d = cost.description || ''
     if (d.length > maxDisplayLength) {
       d = d.slice(0, maxDisplayLength) + "..."
     }
     return d
   }
+
+  let selected = "bg-sky-600 text-white"
+  let unselected = "bg-sky-200 text-sky-900"
 </script>
 
 <FormMessage {form} />
@@ -78,13 +79,27 @@
 {/if}
 
 <AdminPage title="Costs" description="Manage costs">
+  <div class="text-center" slot="center-stock">
+    <div class="mx-auto max-w-3xl">
+      <div class="space-y-5 sm:space-y-4">
+        <a href={"?"}
+          class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
+            data.job == null ? selected : unselected}">All</a>
+        {#each data.jobs as job}
+          <a href={"?job=" + encodeURIComponent(job.id)}
+            class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
+              data.job == job.id ? selected : unselected}">{job.title}</a>
+        {/each}
+      </div>
+    </div>
+  </div>
   <button
     on:click={() =>
       (formItem = {
         id: null,
-        description: "",
         job: "",
         job_date: "",
+        description: "",
         amount: null,
       })}
     slot="add_button"
@@ -101,18 +116,18 @@
     </tr>
   </thead>
   <tbody class="bg-white" slot="tbody">
-    {#each dbData as item, i}
+    {#each data.costs as cost, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.first_tbody_column} title="{item.description}">{desc(item)}</td>
-        <td class={t.tbody_column}>{item.job.title || ""}</td>
-        <td class={t.tbody_column}>{item.job_date || ""}</td>
-        <td class={t.tbody_column}>{item.amount}</td>
+        <td class={t.first_tbody_column} title="{cost.description}">{desc(cost)}</td>
+        <td class={t.tbody_column}>{cost.job.title || ""}</td>
+        <td class={t.tbody_column}>{cost.job_date || ""}</td>
+        <td class={t.tbody_column}>{cost.amount}</td>
         <td class={t.tbody_action_column}>
-          <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
+          <a on:click={() => (formItem = cost)} href="#" class={t.blue_button}
             >Edit</a
           >
           <form action="?/delete" method="POST" class="inline">
-            <input type="hidden" name="id" value={item.id} />
+            <input type="hidden" name="id" value={cost.id} />
             <input type="submit" class={t.danger_button} value="Delete" />
           </form>
         </td>
