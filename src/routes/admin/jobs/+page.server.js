@@ -7,7 +7,7 @@ export function load({ cookies }) {
     items: Job.select((job) => ({
       id: true,
       client: true,
-      client: { full_name: true },
+      client: { id: true, full_name: true },
       title: true,
       tags: true,
       beg_date: true,

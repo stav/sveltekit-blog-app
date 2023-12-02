@@ -6,7 +6,7 @@ export function load({ cookies }) {
   return {
     items: Payment.select((/** @type { Payment } */ payment) => ({
       id: true,
-      job: {title: true, id: true},
+      job: { title: true, id: true, client: { full_name: true } },
       description: true,
       date: true,
       amount: true,
@@ -15,8 +15,8 @@ export function load({ cookies }) {
     jobs: Job.select((job) => ({
       id: true,
       title: true,
-      client: true,
-      order_by: job.full_name,
+      client: { full_name: true },
+      order_by: [job.client.full_name, job.title],
     })),
     tags: Tag.select((tag) => ({
       id: true,

@@ -8,14 +8,14 @@ export function load({ url }) {
   const costSelection = (cost) => {
     const selection = {
       id: true,
-      job: { title: true, id: true},
+      job: { title: true, id: true, client: { full_name: true } },
       description: true,
       purchase_date: true,
       job_date: true,
       vendor: true,
       amount: true,
       tax: true,
-      order_by: [cost.job, cost.job_date],
+      order_by: [cost.job.client.full_name, cost.job, cost.job_date],
     }
 
     if (job) {
@@ -30,8 +30,8 @@ export function load({ url }) {
     jobs: Job.select((job) => ({
       id: true,
       title: true,
-      client: true,
-      order_by: job.full_name,
+      client: { full_name: true },
+      order_by: [job.client.full_name, job.title],
     })),
     tags: Tag.select((tag) => ({
       id: true,

@@ -12,6 +12,7 @@ export function load({ cookies }) {
       first_name: true,
       company_name: true,
       status: true,
+      jobs: true,
       order_by: client.full_name,
     })),
   }

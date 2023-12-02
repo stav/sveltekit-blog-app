@@ -80,6 +80,7 @@
       <th class={t.header_column}>First Name</th>
       <th class={t.header_column}>Last Name</th>
       <th class={t.header_column}>Phone</th>
+      <th class={t.header_column}>Jobs</th>
       <th class={t.header_column} />
     </tr>
   </thead>
@@ -89,6 +90,7 @@
         <td class={t.tbody_column}>{item.first_name || ""}</td>
         <td class={t.tbody_column}>{item.last_name || ""}</td>
         <td class={t.tbody_column}>{item.phone}</td>
+        <td class={t.tbody_column}>{item.jobs.length}</td>
         <td class={t.tbody_action_column}>
           <AdminActs bind:form={formItem} {item} />
         </td>
