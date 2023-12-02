@@ -1,12 +1,16 @@
 <script>
   import { t } from "$lib/tailwind.js"
+
   export let data
 
-    const _USD = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    })
+  // @ts-ignore
+  const float = n => isNaN(n) ? 0 : parseFloat(n)
+
+  const _USD = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  })
 
   /**
    * @param {number} val
@@ -28,11 +32,20 @@
    */
    function title(job) {
     const maxDisplayLength = 20
-    let d = job.title || ''
-    if (d.length > maxDisplayLength) {
-      d = d.slice(0, maxDisplayLength) + "..."
+    let title = job.title.trim() || ''
+    if (title.length > maxDisplayLength) {
+      const crop = title.slice(0, maxDisplayLength)
+      title = `<span title="${job.title}">${crop}...</span>`
     }
-    return d
+    return title
+  }
+
+  /**
+   * @param {string} field
+   */
+  function total(field) {
+    // @ts-ignore
+    return data.jobs.reduce((partial, a) => partial + float(a[field]), 0)
   }
 </script>
 
@@ -73,13 +86,22 @@
             <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
               <td class={t.tbody_column}>{job.beg_date}</td>
               <td class={t.tbody_column}>{job.client.full_name}</td>
-              <td class={t.tbody_column}>{title(job)}</td>
+              <td class={t.tbody_column}>{@html title(job)}</td>
               <td class={t.tbody_colrit}>({job.payments.length}) {USD(job.total_earn)}</td>
               <td class={t.tbody_colrit}>({job.costs.length})    {USD(job.total_cost)}</td>
               <td class={t.tbody_colrit}>{USD(job.total_earn - job.total_cost)}</td>
               <td class={t.tbody_colrit}>{PCT((job.total_earn - job.total_cost) / job.total_earn)}</td>
             </tr>
-          {/each}
+            {/each}
+            <tr>
+              <td class={t.tbody_column}></td>
+              <td class={t.tbody_column}></td>
+              <td class={t.tbody_column}></td>
+              <td class={t.tbody_colrit}>{USD(total('total_earn'))}</td>
+              <td class={t.tbody_colrit}>{USD(total('total_cost'))}</td>
+              <td class={t.tbody_colrit}>{USD(total('total_earn') - total('total_cost'))}</td>
+              <td class={t.tbody_colrit}>{PCT((total('total_earn') - total('total_cost')) / total('total_earn'))}</td>
+            </tr>
         </tbody>
       </table>
     </div>
