@@ -21,7 +21,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="Comment">
+  <AdminForm currentJobId={formItem.id} name="Comment">
     <FormField label="Title" name="post">
       <select name="post" class={t.input}>
         {#each data.posts as post}

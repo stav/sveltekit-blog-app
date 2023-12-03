@@ -21,7 +21,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="Tag">
+  <AdminForm currentJobId={formItem.id} name="Tag">
     <FormField label="Tag" name="name">
       <input type="text" name="name" value={formItem.name} class={t.input} />
     </FormField>

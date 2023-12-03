@@ -11,13 +11,14 @@
 
   let dbData = data.items
 
-  /** @type {{ company_name: any; first_name: any; last_name: any; email: any; phone: any; status: any; } | null | undefined} */
+  /** @type {{ id: string | null, company_name: any; first_name: any; last_name: any; email: any; phone: any; status: any; } | null | undefined} */
   let formItem = null
 
   /** @type {import('./$types').ActionData} */
   export let form
 
   if (form?.error) {
+    // @ts-ignore
     formItem = form.form
   }
 </script>
@@ -25,7 +26,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="Client">
+  <AdminForm currentJobId={formItem.id} name="Client">
     <FormField label="First Name" name="first_name">
       <input
         type="text"
@@ -61,6 +62,7 @@
   <button
     on:click={() =>
       (formItem = {
+        id: null,
         company_name: "",
         first_name: "",
         last_name: "",

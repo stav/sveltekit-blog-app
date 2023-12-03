@@ -22,7 +22,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="User">
+  <AdminForm currentJobId={formItem.id} name="User">
     <FormField label="Username" name="username">
       <input
         type="text"

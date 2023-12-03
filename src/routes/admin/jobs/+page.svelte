@@ -26,7 +26,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="Job">
+  <AdminForm currentJobId={formItem.id} name="Job">
     <FormField label="Client" name="client">
       <select name="client" class={t.input}>
         {#each data.clients as client}

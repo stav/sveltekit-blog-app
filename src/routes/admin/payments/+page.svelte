@@ -40,7 +40,7 @@
 <FormMessage {form} />
 
 {#if formItem}
-  <AdminForm {formItem} name="Payment">
+  <AdminForm currentJobId={formItem.id} name="Payment">
     <FormField label="Job" name="job">
       <select name="job" class={t.input}>
         {#each data.jobs as job}

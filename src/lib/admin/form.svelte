@@ -1,6 +1,10 @@
 <script>
   import { t, all } from "$lib/tailwind.js"
-  export let formItem
+
+  /** @type {string | null} */
+  export let currentJobId
+
+  /** @type {string} */
   export let name
 </script>
 
@@ -10,19 +14,19 @@
       <form
         id="admin_form"
         class="divide-y divide-gray-200 lg:col-span-9"
-        action={formItem.id ? "?/update" : "?/create"}
+        action={currentJobId ? "?/update" : "?/create"}
         method="POST"
       >
         <div class="py-6 px-4 sm:p-6 lg:pb-8">
           <div>
             <h2 class="text-lg font-medium leading-6 text-gray-900">
-              {formItem.id ? "Edit" : "New"}
+              {currentJobId ? "Edit" : "New"}
               {name}
             </h2>
           </div>
 
-          {#if formItem.id}
-            <input type="hidden" name="id" value={formItem.id} />
+          {#if currentJobId}
+            <input type="hidden" name="id" value={currentJobId} />
           {/if}
 
           <slot />

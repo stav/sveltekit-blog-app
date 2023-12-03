@@ -72,7 +72,7 @@
 -->
 
 <div class={showForm ? "" : "hidden"}>
-  <AdminForm {formItem} name="Post">
+  <AdminForm currentJobId={formItem.id} name="Post">
     <FormField label="Title" name="title">
       <input type="text" name="title" value={formItem.title} class={t.input} />
     </FormField>
@@ -175,7 +175,7 @@
         <td class={t.tbody_column_wrap}>
           {#each item.tags as tag, i}
             {tag.name}{i < item.tags.length - 1 ? ", " : ""}
-          {/each} 
+          {/each}
         </td>
         <td class={t.tbody_column}>
           {#if item.image_src}
