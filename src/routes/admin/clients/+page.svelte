@@ -1,15 +1,17 @@
 <script>
-  // @ts-nocheck
-  import FormMessage from "$lib/form-message.svelte"
   import { t } from "$lib/tailwind.js"
 
-  import FormField from "$lib/form-field.svelte"
-  import AdminPage from "$lib/admin/page.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
+  import FormField from "$lib/form-field.svelte"
+  import FormMessage from "$lib/form-message.svelte"
 
   export let data
+
   let dbData = data.items
+
+  /** @type {{ company_name: any; first_name: any; last_name: any; email: any; phone: any; status: any; } | null | undefined} */
   let formItem = null
 
   /** @type {import('./$types').ActionData} */
@@ -48,8 +50,8 @@
 
     <FormField label="Status" name="status">
       <select name="status" class={t.input}>
-        <option value="active"Active={formItem.role == "active"}>Active</option>
-        <option value="archived" selected={formItem.role == "archived"}>Archived</option>
+        <option value="active" selected={formItem.status == "active"}>Active</option>
+        <option value="archived" selected={formItem.status == "archived"}>Archived</option>
       </select>
     </FormField>
   </AdminForm>
@@ -59,16 +61,11 @@
   <button
     on:click={() =>
       (formItem = {
-        id: null,
         company_name: "",
         first_name: "",
         last_name: "",
         email: "",
         phone: "",
-        street: "",
-        city: "",
-        state: "",
-        zip: "",
         status: "active",
       })}
     slot="add_button"

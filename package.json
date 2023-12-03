@@ -29,6 +29,7 @@
     "bcryptjs": "^2.4.3",
     "busboy": "^1.6.0",
     "edgedb": "^1.4.0",
-    "quill": "^1.3.7"
+    "quill": "^1.3.7",
+    "svelte-flatpickr": "^3.3.4"
   }
 }

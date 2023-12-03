@@ -1,9 +1,10 @@
 <script>
   import { t } from "$lib/tailwind.js"
 
-  import AdminPage from "$lib/admin/page.svelte"
   import AdminForm from "$lib/admin/form.svelte"
+  import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
+  import DateField from '$lib/date-field.svelte'
   import FormField from "$lib/form-field.svelte"
   import FormMessage from "$lib/form-message.svelte"
 
@@ -82,13 +83,8 @@
       />
     </FormField>
 
-    <FormField label="Date" name="job_date">
-      <input
-        type="text"
-        name="purchase_date"
-        value={formItem.purchase_date}
-        class={t.input}
-      />
+    <FormField label="Date" name="purchase_date">
+      <DateField name="purchase_date" value={formItem.purchase_date} />
     </FormField>
 
     <FormField label="Amount" name="amount">

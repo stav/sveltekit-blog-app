@@ -1,15 +1,18 @@
 <script>
-  // @ts-nocheck
-  import FormMessage from "$lib/form-message.svelte"
   import { t } from "$lib/tailwind.js"
 
-  import FormField from "$lib/form-field.svelte"
   import AdminForm from "$lib/admin/form.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
+  import DateField from "$lib/date-field.svelte"
+  import FormField from "$lib/form-field.svelte"
+  import FormMessage from "$lib/form-message.svelte"
 
   export let data
+
   let dbData = data.items
+
+  /** @type {{ title: string; client: any; beg_date: string; end_date: string; } | null | undefined} */
   let formItem = null
 
   /** @type {import('./$types').ActionData} */
@@ -44,21 +47,11 @@
     </FormField>
 
     <FormField label="Beginning Date" name="beg_date">
-      <input
-        type="text"
-        name="beg_date"
-        value={formItem.beg_date}
-        class={t.input}
-      />
+      <DateField name="beg_date" value={formItem.beg_date} />
     </FormField>
 
-    <FormField label="End Date" name="end_date">
-      <input
-        type="text"
-        name="end_date"
-        value={formItem.end_date}
-        class={t.input}
-      />
+    <FormField label="Ending Date" name="end_date">
+      <DateField name="end_date" value={formItem.end_date} />
     </FormField>
   </AdminForm>
 {/if}
@@ -67,7 +60,6 @@
   <button
     on:click={() =>
       (formItem = {
-        id: null,
         title: "",
         client: null,
         beg_date: "",

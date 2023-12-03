@@ -1,17 +1,18 @@
 <script>
-  import FormMessage from "$lib/form-message.svelte"
   import { t } from "$lib/tailwind.js"
 
-  import FormField from "$lib/form-field.svelte"
   import AdminForm from "$lib/admin/form.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
+  import DateField from '$lib/date-field.svelte'
+  import FormField from "$lib/form-field.svelte"
+  import FormMessage from "$lib/form-message.svelte"
 
   export let data
+
   let dbData = data.items
-  /**
-   * @type {any}
-   */
+
+  /** @type {any} */
   let formItem = null
 
   /** @type {import('./$types').ActionData} */
@@ -60,12 +61,7 @@
     </FormField>
 
     <FormField label="Date" name="date">
-      <input
-        type="text"
-        name="date"
-        value={formItem.date}
-        class={t.input}
-      />
+      <DateField name="date" value={formItem.date} />
     </FormField>
 
     <FormField label="Amount" name="amount">
