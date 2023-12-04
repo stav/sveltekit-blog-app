@@ -3,7 +3,7 @@ import { Job, Tag, Cost, e } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
 export function load({ url }) {
-  const job = url.searchParams.get("job")
+  const selectedJobId = url.searchParams.get("job")
 
   const costSelection = (cost) => {
     const selection = {
@@ -18,8 +18,8 @@ export function load({ url }) {
       order_by: [cost.job.client.full_name, cost.job, cost.job_date],
     }
 
-    if (job) {
-      selection.filter = e.op(cost.job.id, "=", e.uuid(job))
+    if (selectedJobId) {
+      selection.filter = e.op(cost.job.id, "=", e.uuid(selectedJobId))
     }
 
     return selection
@@ -33,12 +33,6 @@ export function load({ url }) {
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
     })),
-    tags: Tag.select((tag) => ({
-      id: true,
-      name: true,
-      order_by: tag.name,
-    })),
-    job,
   }
 }
 
@@ -86,7 +80,7 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Cost.update((job) => ({
+      await Cost.update(() => ({
         filter_single: { id },
         set: getCost(data),
       }))

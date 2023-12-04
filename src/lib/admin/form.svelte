@@ -1,11 +1,25 @@
 <script>
+  import { page } from '$app/stores';
+
   import { t, all } from "$lib/tailwind.js"
+
+  /** @type {string} */
+  export let name
 
   /** @type {string | null} */
   export let currentJobId
 
-  /** @type {string} */
-  export let name
+  /** @type {URL} */
+  $: url = $page.url;
+
+  /** @type {string | null} */
+  $: selectedJobId = url.searchParams.get('job')
+
+  const action = currentJobId ? "?/update" : "?/create"
+  let actionQuery = action
+  $: actionQuery = selectedJobId ? `${action}&job=${selectedJobId}` : action
+
+  console.log({selectedJobId})
 </script>
 
 <div class="mx-auto max-w-screen-xl">
@@ -14,7 +28,7 @@
       <form
         id="admin_form"
         class="divide-y divide-gray-200 lg:col-span-9"
-        action={currentJobId ? "?/update" : "?/create"}
+        action="{actionQuery}"
         method="POST"
       >
         <div class="py-6 px-4 sm:p-6 lg:pb-8">

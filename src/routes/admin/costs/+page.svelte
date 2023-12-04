@@ -1,6 +1,7 @@
 <script>
-  import { t } from "$lib/tailwind.js"
+  import { page } from '$app/stores';
 
+  import { t } from "$lib/tailwind.js"
   import AdminForm from "$lib/admin/form.svelte"
   import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
@@ -48,16 +49,21 @@
     return title
   }
 
+  /** @type {URL} */
+  $: url = $page.url;
+
+  /** @type {string | null} */
+  $: selectedJobId = url.searchParams.get('job')
+
   let selected = "bg-sky-600 text-white"
   let unselected = "bg-sky-200 text-sky-900"
 
   /** @param {{ id: any; }} job */
   function checkJob(job) {
     if (job.id == formItem?.job?.id) return true
-    if (job.id == data.job) return true
+    if (job.id == selectedJobId) return true
     return false
   }
-
 </script>
 
 <FormMessage {form} />
@@ -104,11 +110,11 @@
       <div class="space-y-5 sm:space-y-4">
         <a href={"?"}
           class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
-            data.job == null ? selected : unselected}">All</a>
+            selectedJobId == null ? selected : unselected}">All</a>
         {#each data.jobs as job}
           <a href={"?job=" + encodeURIComponent(job.id)} on:click={()=>(formItem = null)}
             class="m-1 inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {
-              data.job == job.id ? selected : unselected}">{job.title.slice(0, 12)}</a>
+              selectedJobId == job.id ? selected : unselected}">{job.title.slice(0, 12)}</a>
         {/each}
       </div>
     </div>
