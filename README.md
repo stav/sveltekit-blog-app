@@ -10,8 +10,6 @@ EdgeDb is a prerequisite: https://www.edgedb.com/install
 
     cd sveltekit-blog-app
 
-    npm install
-
 ### 2. Install dependencies with Bun:
 
     cd sveltekit-blog-app
