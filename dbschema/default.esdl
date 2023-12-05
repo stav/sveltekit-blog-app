@@ -24,6 +24,7 @@ module default {
   type User extending HasTimestamp {
     required property email -> str { constraint exclusive; };
     required property username -> str { constraint exclusive; };
+    multi link clients := .<user[is Client];
     property first_name -> str;
     property last_name -> str;
     property password_hash -> str;
@@ -36,6 +37,8 @@ module default {
   }
 
   type Client extending HasTimestamp {
+    link user -> User; # Should be required; but, QueryError: possibly an empty set returned by an expression for a computed link 'user' declared as 'required'
+    multi link jobs := .<client[is Job];
     property email -> str;
     property phone -> str;
     property company_name -> str;
@@ -47,7 +50,6 @@ module default {
     property state -> str;
     property zip -> str;
     property address := .street ++ ', ' ++ .city ++ ', ' ++ .state ++ ' ' ++ .zip;
-    multi link jobs := .<client[is Job];
     property status -> Status {
       default := 'active';
     }

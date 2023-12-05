@@ -1,10 +1,16 @@
-// @ts-nocheck
-import { Client } from "$lib/server/database.js"
+import { Client, User, e } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
-export function load({ cookies }) {
-  return {
-    items: Client.select((client) => ({
+/** @returns LoadedClientData */
+export function load({ locals }) {
+  /**
+   * @param {{
+   *   full_name: string;
+   *   user: { email: string; };
+   * }} client
+   */
+  function clientSelection (client) {
+    return {
       id: true,
       email: true,
       phone: true,
@@ -13,12 +19,21 @@ export function load({ cookies }) {
       company_name: true,
       status: true,
       jobs: true,
+      user: { email: true },
       order_by: client.full_name,
-    })),
+      filter: e.op(client.user.email, '=', locals.user.email),
+    }
+  }
+
+  return {
+    clients: Client.select(clientSelection),
   }
 }
 
-let getForm = (data) => {
+/**
+ * @param {import("url").URLSearchParams} data
+ */
+function getForm (data) {
   return {
     company_name: data.get("company_name"),
     first_name: data.get("first_name"),
@@ -29,12 +44,37 @@ let getForm = (data) => {
   }
 }
 
+/**
+ * Assign the client object to the current user.
+ *
+ * @param {import("url").URLSearchParams} data
+ * @param {string} id
+ * @returns {{
+ *   company_name: string | null,
+ *   first_name: string | null,
+ *   last_name: string | null,
+ *   email: string | null,
+ *   phone: string | null,
+ *   status: string | null,
+ *   user: any,
+ * }}
+ */
+function readyClient (data, id) {
+  return {
+    ...getForm(data),
+    user: User.select_query({ filter_single: { id } })
+  }
+}
+
+/** @type {import('./$types').Actions} */
 export const actions = {
-  create: async ({ request }) => {
+  create: async ({ request, locals }) => {
     const data = await getBody(request)
     try {
-      await Client.insert(getForm(data))
-    } catch (error) {
+      // @ts-ignore
+      const clientData = readyClient(data, locals.user.id)
+      await Client.insert(clientData)
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
@@ -42,14 +82,13 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Client.update((client) => ({
+      await Client.update(() => ({
         filter_single: { id },
         set: getForm(data),
       }))
-    } catch (error) {
-      let form = getForm(data)
-      form.id = data.get("id")
-      return { error: error.message, form: form }
+    } catch (/** @type {any} */ error) {
+      let form = { id: data.get('id'), ...getForm(data) }
+      return { error: error.message, form }
     }
   },
   delete: async ({ request }) => {
@@ -59,7 +98,7 @@ export const actions = {
     let result
     try {
       result = await Client.delete({ filter_single: { id } })
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message }
     }
     console.info('delete', {result})

@@ -7,20 +7,14 @@
   import FormField from "$lib/form-field.svelte"
   import FormMessage from "$lib/form-message.svelte"
 
+  /** @type LoadedClientData */
   export let data
-
-  let dbData = data.items
-
-  /** @type {{ id: string | null, company_name: any; first_name: any; last_name: any; email: any; phone: any; status: any; } | null | undefined} */
-  let formItem = null
 
   /** @type {import('./$types').ActionData} */
   export let form
 
-  if (form?.error) {
-    // @ts-ignore
-    formItem = form.form
-  }
+  /** @type {ClientFormItem | undefined} */
+  let formItem = form?.error ? form.form : undefined
 </script>
 
 <FormMessage {form} />
@@ -62,7 +56,7 @@
   <button
     on:click={() =>
       (formItem = {
-        id: null,
+        id: undefined,
         company_name: "",
         first_name: "",
         last_name: "",
@@ -84,14 +78,14 @@
     </tr>
   </thead>
   <tbody class="bg-white" slot="tbody">
-    {#each dbData as item, i}
+    {#each data.clients as client, i}
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
-        <td class={t.tbody_column}>{item.first_name || ""}</td>
-        <td class={t.tbody_column}>{item.last_name || ""}</td>
-        <td class={t.tbody_column}>{item.phone}</td>
-        <td class={t.tbody_column}>{item.jobs.length}</td>
+        <td class={t.tbody_column}>{client.first_name || ""}</td>
+        <td class={t.tbody_column}>{client.last_name || ""}</td>
+        <td class={t.tbody_column}>{client.phone}</td>
+        <td class={t.tbody_column}>{client.jobs.length}</td>
         <td class={t.tbody_action_column}>
-          <AdminActs bind:form={formItem} {item} />
+          <AdminActs bind:form={formItem} item={client} />
         </td>
       </tr>
     {/each}

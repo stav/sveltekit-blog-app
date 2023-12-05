@@ -3,7 +3,21 @@
 // and what to do when importing types
 declare namespace App {
 	// interface Error {}
-	// interface Locals {}
+	interface Locals { user: any }
 	// interface PageData {}
 	// interface Platform {}
+}
+
+type ClientFormItem = {
+	id?: string;
+  company_name: any;
+  first_name: any;
+  last_name: any;
+  email: any;
+  phone: any;
+  status: any;
+}
+
+type LoadedClientData = {
+  clients: any;
 }

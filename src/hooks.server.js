@@ -27,6 +27,7 @@ export const handle = async ({ event, resolve }) => {
   }
 
   const user = await User.select({
+    id: true,
     username: true,
     first_name: true,
     last_name: true,
@@ -39,6 +40,7 @@ export const handle = async ({ event, resolve }) => {
   // if `user` exists set `events.local`
   if (user) {
     event.locals.user = {
+      id: user.id,
       username: user.username,
       role: user.role,
       email: user.email,
