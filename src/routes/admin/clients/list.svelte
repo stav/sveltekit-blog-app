@@ -1,5 +1,6 @@
 <script>
   import { t } from "$lib/tailwind.js"
+  import SvgIcon from "$lib/SvgIcons.svelte"
 
   import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
@@ -9,24 +10,29 @@
 
   /** @type {ClientFormItem | undefined} */
   export let formItem
+
+  const emptyForm = () =>
+    (formItem = {
+      id: undefined,
+      company_name: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      status: "active",
+    })
 </script>
 
 <AdminPage title="Clients" description="Manage clients">
   <button
-    on:click={() =>
-      (formItem = {
-        id: undefined,
-        company_name: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        status: "active",
-      })}
+    on:click={emptyForm}
     slot="add_button"
     type="button"
-    class={t.blue_button}>New Client</button
-  >
+    class={t.blue_button}
+    >
+      <SvgIcon icon="plus" htmlClass="mr-1 h-6 w-6 text-white" />
+      New Client
+  </button>
   <thead class="bg-gray-100" slot="thead">
     <tr>
       <th class={t.header_column}>First Name</th>
