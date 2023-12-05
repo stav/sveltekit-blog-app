@@ -6,7 +6,7 @@
   /** @type {string} */
   export let name
 
-  /** @type {string | null} */
+  /** @type {string | undefined} */
   export let currentJobId
 
   /** @type {URL} */
