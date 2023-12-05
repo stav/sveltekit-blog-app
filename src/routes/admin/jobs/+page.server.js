@@ -1,33 +1,34 @@
-// @ts-nocheck
-import { Client, Job, Tag } from "$lib/server/database.js"
+import { Client, Job, e } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
-export function load({ cookies }) {
-  return {
-    items: Job.select((job) => ({
+export function load({ locals }) {
+  /**
+   * @param {{ client: { full_name: string; user: { email: string } }; }} job
+   */
+  function jobSelection (job) {
+    return {
       id: true,
-      client: true,
-      client: { id: true, full_name: true },
+      client: { id: true, full_name: true, user: { email: true } },
       title: true,
       tags: true,
       beg_date: true,
       end_date: true,
       order_by: job.client.full_name,
-    })),
-    clients: Client.select((client) => ({
+      filter: e.op(job.client.user.email, '=', locals.user.email),
+    }
+  }
+
+  return {
+    items: Job.select(jobSelection),
+    clients: Client.select((/** @type {{ full_name: string; }} */ client) => ({
       id: true,
       full_name: true,
       order_by: client.full_name,
     })),
-    tags: Tag.select((tag) => ({
-      id: true,
-      name: true,
-      order_by: tag.name,
-    })),
   }
 }
 
-let getForm = (data) => {
+let getForm = (/** @type {import("url").URLSearchParams} */ data) => {
   return {
     title: data.get("title"),
     client: data.get("client"),
@@ -36,7 +37,7 @@ let getForm = (data) => {
   }
 }
 
-let getJob = (data) => {
+let getJob = (/** @type {import("url").URLSearchParams} */ data) => {
   let f = getForm(data)
   return {
     title: f.title,
@@ -49,11 +50,16 @@ let getJob = (data) => {
 }
 
 export const actions = {
+  // new: async ({ request }) => {
+  //   const data = await getBody(request)
+  //   console.log('ACTION data:', {data})
+  //   return { clientId: data.get('client') }
+  // },
   create: async ({ request }) => {
     const data = await getBody(request)
     try {
       await Job.insert(getJob(data))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
@@ -61,12 +67,13 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Job.update((job) => ({
+      await Job.update(() => ({
         filter_single: { id },
         set: getJob(data),
       }))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       let form = getForm(data)
+      // @ts-ignore
       form.id = data.get("id")
       return { error: error.message, form: form }
     }
@@ -78,7 +85,7 @@ export const actions = {
     let result
     try {
       result = await Job.delete({ filter_single: { id } })
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message }
     }
     console.info('delete', {result})
