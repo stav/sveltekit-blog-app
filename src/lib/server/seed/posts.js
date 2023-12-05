@@ -5,7 +5,7 @@ import { selectTagId, selectUserId } from "./db"
 // We assume the tags & users already exist
 export async function addPosts() {
 
-  console.log('Adding posts...')
+  console.info('Adding posts...')
 
   const sveltekit_tag_id = await selectTagId("SvelteKit")
   const tailwind_tag_id = await selectTagId("Tailwind")
@@ -48,7 +48,7 @@ export async function addPosts() {
     author: await selectUserId("siri"),
   })
 
-  console.log('added posts.')
+  console.info('added posts.')
 }
 
 /**
@@ -67,5 +67,5 @@ async function addPost(post) {
     }),
     tags: Tag.select_query_by_ids(post.tags),
   })
-  console.log("Added post: " + post.title, result.id)
+  console.info("Added post: " + post.title, result.id)
 }

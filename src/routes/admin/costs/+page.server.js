@@ -50,9 +50,7 @@ let getForm = (data) => {
 
 let getCost = (data) => {
   let f = getForm(data)
-  console.log('f.job', f.job)
   const job = Job.select_query({ filter_single: { id: f.job } })
-  console.log({job})
 
   return {
     description: f.description,
@@ -69,7 +67,6 @@ export const actions = {
   create: async ({ request }) => {
     const data = await getBody(request)
     const cost = getCost(data)
-    console.log({cost})
     try {
       await Cost.insert(cost)
     } catch (error) {

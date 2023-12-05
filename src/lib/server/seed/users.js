@@ -3,7 +3,7 @@ import { User } from "$lib/server/database.js"
 
 export async function addUsers() {
 
-  console.log('Adding users...')
+  console.info('Adding users...')
 
   // everybody will have the password: "password"
   let password_hash = await bcrypt.hash("password", 10)
@@ -23,7 +23,7 @@ export async function addUsers() {
 
     user.password_hash = password_hash
     let result = await User.insert_in_readonly_mode(user)
-    console.log("Added user: " + user.username, result.id)
+    console.info("Added user: " + user.username, result.id)
     return result.id
   }
 
@@ -72,5 +72,5 @@ export async function addUsers() {
     last_name: "GigaBot",
   })
 
-  console.log('added users.')
+  console.info('added users.')
 }

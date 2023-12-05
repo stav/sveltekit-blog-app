@@ -16,7 +16,6 @@ export const load = async ({ locals }) => {
 export const actions = {
   default: async ({ request, cookies }) => {
     const data = await getBody(request)
-    console.debug('Got Body', {data})
     const email = data.get("email")
     const password = data.get("password")
 

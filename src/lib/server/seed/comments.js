@@ -66,5 +66,5 @@ async function addComment(comment) {
       filter_single: { id: comment.post },
     }),
   })
-  console.log("added comment", comment.content, result.id)
+  console.info("added comment", comment.content, result.id)
 }

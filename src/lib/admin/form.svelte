@@ -18,8 +18,6 @@
   const action = currentJobId ? "?/update" : "?/create"
   let actionQuery = action
   $: actionQuery = selectedJobId ? `${action}&job=${selectedJobId}` : action
-
-  console.log({selectedJobId})
 </script>
 
 <div class="mx-auto max-w-screen-xl">

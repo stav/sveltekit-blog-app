@@ -5,7 +5,7 @@ import { addUsers } from "./users"
 import { addTags } from "./tags"
 
 export async function seed() {
-  console.log("Seeding database...")
+  console.info("Seeding database...")
 
   // uncomment to clear database
   await Comment.delete({})
@@ -19,5 +19,5 @@ export async function seed() {
   await addPosts()
   await addComments()
 
-  console.log('done seeding.')
+  console.info('done seeding.')
 }
