@@ -21,3 +21,16 @@ type ClientFormItem = {
 type LoadedClientData = {
   clients: any;
 }
+
+type JobFormItem = {
+  id?: string;
+  title: string;
+  client: any;
+  beg_date: string;
+  end_date: string;
+}
+
+type LoadedJobData = {
+  jobs: any;
+  clients: any;
+}

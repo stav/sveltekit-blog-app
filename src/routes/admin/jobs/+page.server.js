@@ -19,7 +19,7 @@ export function load({ locals }) {
   }
 
   return {
-    items: Job.select(jobSelection),
+    jobs: Job.select(jobSelection),
     clients: Client.select((/** @type {{ full_name: string; }} */ client) => ({
       id: true,
       full_name: true,

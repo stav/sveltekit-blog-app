@@ -50,7 +50,7 @@
         <td class={t.tbody_column}>{client.phone}</td>
         <td class={t.tbody_column}>{client.jobs.length}</td>
         <td class={t.tbody_action_column}>
-          <AdminActs bind:form={formItem} item={client} />
+          <AdminActs bind:form={formItem} item={client} href={`jobs?client=${client.id}`} />
         </td>
       </tr>
     {/each}
