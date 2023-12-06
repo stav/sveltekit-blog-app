@@ -3,7 +3,7 @@ import { getBody } from '$lib/server/request.js'
 
 export function load({ locals }) {
   return {
-    items: Payment.select((/** @type { PaymentModel } */ payment) => ({
+    payments: Payment.select((/** @type { PaymentModel } */ payment) => ({
       id: true,
       job: { title: true, id: true, client: { full_name: true } },
       description: true,
