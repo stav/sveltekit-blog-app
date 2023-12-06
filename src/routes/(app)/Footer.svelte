@@ -10,19 +10,19 @@
       aria-label="Footer"
     >
       <div class="px-5">
-        <a href="#" class="text-base text-white hover:text-gray-200"
+        <a href="#top" class="text-base text-white hover:text-gray-200"
           >Terms of Service</a
         >
       </div>
 
       <div class="px-5">
-        <a href="#" class="text-base text-white hover:text-gray-200"
+        <a href="#top" class="text-base text-white hover:text-gray-200"
           >Privacy Policy</a
         >
       </div>
     </nav>
     <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
-      <a href="#" class="text-white hover:text-gray-200">
+      <a href="#top" class="text-white hover:text-gray-200">
         <span class="sr-only">Facebook</span>
         <svg
           class="h-6 w-6"
@@ -38,7 +38,7 @@
         </svg>
       </a>
 
-      <a href="#" class="text-white hover:text-gray-200">
+      <a href="#top" class="text-white hover:text-gray-200">
         <span class="sr-only">Twitter</span>
         <svg
           class="h-6 w-6"

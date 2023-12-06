@@ -36,7 +36,6 @@
             <input
               name="email"
               type="email-address"
-              autocomplete="email-address"
               required
               class={t.input}
             />
@@ -50,7 +49,6 @@
               id="password"
               name="password"
               type="password"
-              autocomplete="password"
               required
               class={t.input}
             />

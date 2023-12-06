@@ -1,5 +1,11 @@
 /** @type {import('./$types').LayoutLoad} */
 export function load({ route }) {
+  /** @type {{
+   *   name: string;
+   *   icon: string;
+   *   url: string;
+   *   active?: boolean;
+   * }[]} */
   let sections = [
     {
       name: "Profile",

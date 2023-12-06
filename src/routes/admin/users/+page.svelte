@@ -112,7 +112,7 @@
         <td class={t.tbody_column}>{item.role}</td>
 
         <td class={t.tbody_action_column}>
-          <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
+          <a on:click={() => (formItem = item)} href="#top" class={t.blue_button}
             >Edit</a
           >
           <form action="?/delete" method="POST" class="inline">

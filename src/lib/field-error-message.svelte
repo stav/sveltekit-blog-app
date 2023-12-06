@@ -1,6 +1,6 @@
 <script>
   /**
-   * @type {string}
+   * @type {string | undefined}
    */
   export let message
 </script>

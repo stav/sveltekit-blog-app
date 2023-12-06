@@ -6,13 +6,11 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 const config = {
 	kit: {
 		adapter: adapter()
-	}, 
+	},
 	preprocess: vitePreprocess(),
 	vitePlugin: {
-		experimental: {
-			inspector: {
-				holdMode: true,
-			}
+		inspector: {
+			holdMode: true,
 		}
 	}
 };

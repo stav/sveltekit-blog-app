@@ -40,7 +40,7 @@
         </div>
         <div class="ml-3">
           <p class="text-sm font-medium text-gray-900">
-            <a href="#" class="hover:underline">{author}</a>
+            <a href="#top" class="hover:underline">{author}</a>
           </p>
           <div class="flex space-x-1 text-sm text-gray-500">
             <time datetime="2020-03-16">{date}</time>

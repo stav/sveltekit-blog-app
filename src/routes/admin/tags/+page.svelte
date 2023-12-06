@@ -49,7 +49,7 @@
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
         <td class={t.first_tbody_column}>{item.name}</td>
         <td class={t.tbody_action_column}>
-          <a on:click={() => (formItem = item)} href="#" class={t.blue_button}
+          <a on:click={() => (formItem = item)} href="#top" class={t.blue_button}
             >Edit</a
           >
           <form action="?/delete" method="POST" class="inline">

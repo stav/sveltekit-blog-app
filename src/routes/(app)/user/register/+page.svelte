@@ -47,7 +47,6 @@
             <input
               name="email"
               type="email-address"
-              autocomplete="email-address"
               required
               class={t.input}
             />
@@ -61,7 +60,6 @@
             <input
               name="password"
               type="password"
-              autocomplete="password"
               required
               class={t.input}
             />
@@ -75,7 +73,6 @@
             <input
               name="confirm_password"
               type="password"
-              autocomplete="confirm-password"
               required
               class={t.input}
             />

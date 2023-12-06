@@ -10,8 +10,8 @@
   let last_name = user.last_name
 
   if (form?.error) {
-    first_name = form.form.first_name
-    last_name = form.form.last_name
+    first_name = form.form?.first_name
+    last_name = form.form?.last_name
   }
 </script>
 
@@ -78,7 +78,7 @@
       <div class="mt-4 flex justify-end py-4 px-4 sm:px-6">
         <button
           type="button"
-          on:click={() => (window.location = "/user/settings")}
+          on:click={() => (window.location.href = "/user/settings")}
           class="{t.cancel_button}}">Cancel</button
         >
         <button type="submit" class={t.save_button}>Save</button>

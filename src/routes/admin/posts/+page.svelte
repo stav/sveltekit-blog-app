@@ -191,7 +191,7 @@
               showForm = true
               formItem = item
             }}
-            href="#"
+            href="#top"
             class={t.blue_button}>Edit</a
           >
           <form action="?/delete" method="POST" class="inline">
