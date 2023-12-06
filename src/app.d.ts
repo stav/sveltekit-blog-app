@@ -34,3 +34,14 @@ type LoadedJobData = {
   jobs: any[];
   clients: any[];
 }
+
+type CostModel = {
+  job: JobModel;
+  tags: TagModel;
+  description: string;
+  purchase_date: string;
+  job_date: string;
+  vendor: string;
+  amount: string;
+  tax: string;
+}
