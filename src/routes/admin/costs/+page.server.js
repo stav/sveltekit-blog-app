@@ -32,7 +32,7 @@ export function load({ locals, url }) {
   }
 
   /**
-   * @param {{ client: { full_name: any; }; title: any; }} job
+   * @param {JobModel} job
    */
   function jobSelection (job) {
     return {
@@ -40,6 +40,7 @@ export function load({ locals, url }) {
       title: true,
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
+      filter: e.op(job.client.user.email, '=', locals.user.email),
     }
   }
 

@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+
 // and what to do when importing types
 declare namespace App {
 	// interface Error {}
@@ -35,6 +36,23 @@ type LoadedJobData = {
   clients: any[];
 }
 
+type EdgedbModel = {
+  id: uuid;
+  created_at: datetime;
+}
+
+type JobModel = {
+  client: ClientModel;
+  tags: TagModel[];
+  costs: CostModel[];
+  payments: PaymentModel[];
+  total_cost: string;
+  total_earn: string;
+  beg_date: string;
+  end_date: string;
+  title: string;
+} & EdgedbModel
+
 type CostModel = {
   job: JobModel;
   tags: TagModel[];
@@ -44,7 +62,7 @@ type CostModel = {
   vendor: string;
   amount: string;
   tax: string;
-}
+} & EdgedbModel
 
 type PaymentModel = {
   job: JobModel;
@@ -52,4 +70,4 @@ type PaymentModel = {
   description: string;
   amount: string;
   date: string;
-}
+} & EdgedbModel
