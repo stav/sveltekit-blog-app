@@ -15,16 +15,22 @@ export function load({ locals }) {
       end_date: true,
       order_by: job.client.full_name,
       filter: e.op(job.client.user.email, '=', locals.user.email),
+  }}
+
+  /**
+   * @param {{ full_name: string; }} client
+   */
+  function clientsSelection (client) {
+    return {
+      id: true,
+      full_name: true,
+      order_by: client.full_name,
     }
   }
 
   return {
     jobs: Job.select(jobSelection),
-    clients: Client.select((/** @type {{ full_name: string; }} */ client) => ({
-      id: true,
-      full_name: true,
-      order_by: client.full_name,
-    })),
+    clients: Client.select(clientsSelection),
   }
 }
 
@@ -50,11 +56,6 @@ let getJob = (/** @type {import("url").URLSearchParams} */ data) => {
 }
 
 export const actions = {
-  // new: async ({ request }) => {
-  //   const data = await getBody(request)
-  //   console.log('ACTION data:', {data})
-  //   return { clientId: data.get('client') }
-  // },
   create: async ({ request }) => {
     const data = await getBody(request)
     try {

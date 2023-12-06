@@ -5,9 +5,7 @@
   import DateField from "$lib/date-field.svelte"
   import FormField from "$lib/form-field.svelte"
 
-  /**
-   * @type {any}
-   */
+  /** @type {any[]} */
   export let clients
 
   /** @type {JobFormItem | undefined} */
@@ -19,8 +17,7 @@
     <select name="client" class={t.input}>
       {#each clients as client}
         <option selected={formItem?.client?.id == client.id} value={client.id}
-          >{client.full_name}</option
-        >
+          >{client.full_name}</option>
       {/each}
     </select>
   </FormField>
@@ -38,6 +35,7 @@
     <DateField name="beg_date" value={formItem?.beg_date ?? ''} />
   </FormField>
 
+  <!-- Apparently we can't have more than one Flatpickr on a page. -->
   <!-- Uncaught (in promise) TypeError: selectedDates is undefined -->
   <!-- <FormField label="Ending Date" name="end_date">
     <DateField name="end_date" value={formItem?.end_date ?? ''} />

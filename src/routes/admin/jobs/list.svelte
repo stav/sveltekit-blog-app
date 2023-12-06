@@ -5,9 +5,7 @@
   import AdminPage from "$lib/admin/page.svelte"
   import AdminActs from "$lib/admin/actions.svelte"
 
-  /**
-   * @type {any}
-   */
+  /** @type {any[]} */
   export let jobs
 
   /** @type {JobFormItem | undefined} */

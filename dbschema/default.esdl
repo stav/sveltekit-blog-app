@@ -37,7 +37,13 @@ module default {
   }
 
   type Client extending HasTimestamp {
-    link user -> User; # Should be required; but, QueryError: possibly an empty set returned by an expression for a computed link 'user' declared as 'required'
+    # user should be required; but we get QueryError:
+    # "Possibly an empty set returned by an expression for a computed link 'user' declared as 'required'"
+    # The line below is a hint for how to set a default value, hint: maybe SELECT User id=?
+    # required link user -> User {
+    #     default := (INSERT MovieStats { budget := 0, box_office := 0 });
+    # }
+    link user -> User;
     multi link jobs := .<client[is Job];
     property email -> str;
     property phone -> str;

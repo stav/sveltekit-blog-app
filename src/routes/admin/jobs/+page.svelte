@@ -13,11 +13,14 @@
   /** @type {import('./$types').ActionData} */
   export let form
 
-  const clientId = $page.url.searchParams.get('client')
-
   /** @type JobFormItem | undefined */
   let jobItem = undefined
 
+  /** If we find a `client` parameter in the querystring
+   * then we grab the value and clear it from the page URL
+   * so that the form does not keep re-appearing: Jank alert.
+   */
+  const clientId = $page.url.searchParams.get('client')
   if (clientId) {
     jobItem = {
       title: "",

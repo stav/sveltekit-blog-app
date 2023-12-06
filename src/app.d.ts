@@ -19,7 +19,7 @@ type ClientFormItem = {
 }
 
 type LoadedClientData = {
-  clients: any;
+  clients: any[];
 }
 
 type JobFormItem = {
@@ -31,6 +31,6 @@ type JobFormItem = {
 }
 
 type LoadedJobData = {
-  jobs: any;
-  clients: any;
+  jobs: any[];
+  clients: any[];
 }
