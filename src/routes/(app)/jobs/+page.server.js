@@ -1,8 +1,10 @@
-import { Job } from "$lib/server/database.js"
+import { Job, e } from "$lib/server/database.js"
 
-export function load({ url }) {
-  // @ts-ignore
-  const jobSelection = (job) => {
+export function load({ locals }) {
+  /**
+   * @param {JobModel} job
+   */
+  function jobSelection(job) {
     return {
       id: true,
       title: true,
@@ -14,6 +16,7 @@ export function load({ url }) {
       total_earn: true,
       tags: { name: true },
       order_by: job.client.full_name,
+      filter: e.op(job.client.user.email, '=', locals.user.email),
     }
   }
 
