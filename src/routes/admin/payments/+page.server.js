@@ -1,24 +1,24 @@
-// @ts-nocheck
-import { Job, Tag, Payment } from "$lib/server/database.js"
+import { Job, Tag, Payment, e } from "$lib/server/database.js"
 import { getBody } from '$lib/server/request.js'
 
-export function load({ cookies }) {
+export function load({ locals }) {
   return {
-    items: Payment.select((/** @type { Payment } */ payment) => ({
+    items: Payment.select((/** @type { PaymentModel } */ payment) => ({
       id: true,
       job: { title: true, id: true, client: { full_name: true } },
       description: true,
       date: true,
       amount: true,
       order_by: payment.date,
+      filter: e.op(payment.job.client.user.email, '=', locals.user.email),
     })),
-    jobs: Job.select((job) => ({
+    jobs: Job.select((/** @type {any} */ job) => ({
       id: true,
       title: true,
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
     })),
-    tags: Tag.select((tag) => ({
+    tags: Tag.select((/** @type {any} */ tag) => ({
       id: true,
       name: true,
       order_by: tag.name,
@@ -26,7 +26,7 @@ export function load({ cookies }) {
   }
 }
 
-let getForm = (data) => {
+let getForm = (/** @type {any} */ data) => {
   return {
     job: data.get("job"),
     description: data.get("description"),
@@ -35,7 +35,7 @@ let getForm = (data) => {
   }
 }
 
-let getPayment = (data) => {
+let getPayment = (/** @type {any} */ data) => {
   let f = getForm(data)
   const job = Job.select_query({ filter_single: { id: f.job } })
 
@@ -53,7 +53,7 @@ export const actions = {
     const payment = getPayment(data)
     try {
       await Payment.insert(payment)
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
@@ -61,12 +61,13 @@ export const actions = {
     const data = await getBody(request)
     const id = data.get("id")
     try {
-      await Payment.update((job) => ({
+      await Payment.update(() => ({
         filter_single: { id },
         set: getPayment(data),
       }))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       let form = getForm(data)
+      // @ts-ignore
       form.id = data.get("id")
       return { error: error.message, form: form }
     }
@@ -78,7 +79,7 @@ export const actions = {
     let result
     try {
       result = await Payment.delete({ filter_single: { id } })
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message }
     }
     console.info('delete', {result})

@@ -37,11 +37,19 @@ type LoadedJobData = {
 
 type CostModel = {
   job: JobModel;
-  tags: TagModel;
+  tags: TagModel[];
   description: string;
   purchase_date: string;
   job_date: string;
   vendor: string;
   amount: string;
   tax: string;
+}
+
+type PaymentModel = {
+  job: JobModel;
+  tags: TagModel[];
+  description: string;
+  amount: string;
+  date: string;
 }
