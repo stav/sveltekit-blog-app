@@ -9,5 +9,4 @@ node_modules
 .output
 
 # Edgedb
-dbschema/edgeql-js
 dbschema/dumps
