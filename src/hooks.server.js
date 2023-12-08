@@ -13,12 +13,11 @@ let signinRedirect = () => {
 }
 
 export const handle = async ({ event, resolve }) => {
-  let isAdminPage = event.url.pathname.startsWith("/admin")
-
-  // get cookies from browser
-  const session = event.cookies.get("session")
+  const isAdminPage = event.url.pathname.startsWith("/admin")
+  const session = event.cookies.get("session") // get cookies from browser
 
   if (!session) {
+    console.log('hook handle: NO SESSION')
     // if there is no session load page as normal unless visiting admin page
     if (isAdminPage) {
       return signinRedirect()
@@ -37,6 +36,8 @@ export const handle = async ({ event, resolve }) => {
     filter_single: { user_auth_token: session },
   })
 
+  console.log('hook handle: user', typeof user, user)
+
   // if `user` exists set `events.local`
   if (user) {
     event.locals.user = {
@@ -48,6 +49,10 @@ export const handle = async ({ event, resolve }) => {
       first_name: user.first_name,
       last_name: user.last_name,
     }
+  }
+  else {
+    console.log('hook handle: NO USER!!!')
+    return signinRedirect()
   }
 
   if (isAdminPage && user.role !== "admin") {

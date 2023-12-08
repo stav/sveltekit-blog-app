@@ -58,7 +58,7 @@
       <tr class={i % 2 == 0 ? "" : "bg-gray-50"}>
         <td class={t.first_tbody_column}>{payment.description}</td>
         <td class={t.tbody_column}>{@html title(payment.job)}</td>
-        <td class={t.tbody_column}>{payment.job_date || ""}</td>
+        <td class={t.tbody_column}>{payment.date || ""}</td>
         <td class={t.tbody_column}>{payment.amount}</td>
         <td class={t.tbody_action_column}>
           <AdminActs bind:form={formItem} item={payment} />

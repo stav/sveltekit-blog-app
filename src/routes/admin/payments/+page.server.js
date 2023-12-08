@@ -6,9 +6,9 @@ export function load({ locals }) {
     payments: Payment.select((/** @type { PaymentModel } */ payment) => ({
       id: true,
       job: { title: true, id: true, client: { full_name: true } },
-      description: true,
       date: true,
       amount: true,
+      description: true,
       order_by: payment.date,
       filter: e.op(payment.job.client.user.email, '=', locals.user.email),
     })),
@@ -17,11 +17,7 @@ export function load({ locals }) {
       title: true,
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
-    })),
-    tags: Tag.select((/** @type {any} */ tag) => ({
-      id: true,
-      name: true,
-      order_by: tag.name,
+      filter: e.op(job.client.user.email, '=', locals.user.email),
     })),
   }
 }
@@ -29,9 +25,9 @@ export function load({ locals }) {
 let getForm = (/** @type {any} */ data) => {
   return {
     job: data.get("job"),
-    description: data.get("description"),
     date: data.get("date"),
     amount: data.get("amount"),
+    description: data.get("description"),
   }
 }
 
@@ -40,10 +36,10 @@ let getPayment = (/** @type {any} */ data) => {
   const job = Job.select_query({ filter_single: { id: f.job } })
 
   return {
-    description: f.description,
+    job,
     date: f.date,
     amount: f.amount,
-    job,
+    description: f.description,
   }
 }
 
