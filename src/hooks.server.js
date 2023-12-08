@@ -49,14 +49,14 @@ export const handle = async ({ event, resolve }) => {
       first_name: user.first_name,
       last_name: user.last_name,
     }
+
+    if (isAdminPage && user.role !== "admin") {
+      return signinRedirect()
+    }
   }
   else {
-    console.log('hook handle: NO USER!!!')
-    return signinRedirect()
-  }
-
-  if (isAdminPage && user.role !== "admin") {
-    return signinRedirect()
+    console.log('hook handle: NO USER!!! this seems like a problem')
+    event.cookies.delete("session", { path: "/" })
   }
 
   return await resolve(event)
