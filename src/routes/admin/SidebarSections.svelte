@@ -1,23 +1,35 @@
 <script>
+  import { page } from "$app/stores"
+
   import SvgIcon from "$lib/SvgIcons.svelte"
+
   export let staticSidebar = true
+
   let isDesktop = staticSidebar
-  /**
-   * @type {string}
-   */
-  let defaultText
+
+  const numClients = $page.data.clients.length
+  const numJobs = $page.data.jobs.length
 
   let items = [
     { href: "/", icon: "outline/home", label: "Frontend" },
-    { href: "/admin/payments", icon: "banknotes", label: "Payments" },
-    { href: "/admin/costs", icon: "currency", label: "Costs" },
-    { href: "/admin/jobs", icon: "wrench", label: "Jobs" },
     { href: "/admin/clients", icon: "outline/users", label: "Clients" },
+  ]
+  if (numClients > 0) {
+    items.push({ href: "/admin/jobs", icon: "wrench", label: "Jobs" })
+  }
+  if (numJobs > 0) {
+    items.push({ href: "/admin/costs", icon: "currency", label: "Costs" })
+    items.push({ href: "/admin/payments", icon: "banknotes", label: "Payments" })
+  }
+  const adminItems = [
     { href: "/admin/users", icon: "outline/users", label: "Users" },
     { href: "/admin/tags", icon: "outline/key", label: "Tags" },
     { href: "/admin/posts", icon: "outline/folder", label: "Posts" },
     { href: "/admin/comments", icon: "outline/inbox", label: "Comments" },
   ]
+  if ($page.data.user.role === 'admin') {
+    items.push(...adminItems)
+  }
 </script>
 
 {#each items as item}
@@ -31,7 +43,7 @@
       icon={item.icon}
       htmlClass="mr-3 flex-shrink-0 h-6 w-6 {isDesktop
         ? 'text-gray-200 '
-        : 'text-gray-400 '} "
+        : 'text-gray-400 '}"
     />
     {item.label}
   </a>

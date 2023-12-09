@@ -21,6 +21,10 @@
       phone: "",
       status: "active",
     })
+
+  if (data.clients.length === 0) {
+    emptyForm()
+  }
 </script>
 
 <AdminPage title="Clients" description="Manage clients">

@@ -16,6 +16,7 @@ export function load({ locals }) {
       last_name: true,
       first_name: true,
       company_name: true,
+      full_name: true,
       status: true,
       jobs: true,
       user: { email: true },
