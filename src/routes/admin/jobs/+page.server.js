@@ -14,16 +14,18 @@ export function load({ locals }) {
       end_date: true,
       order_by: job.client.full_name,
       filter: e.op(job.client.user.email, '=', locals.user.email),
-  }}
+    }
+  }
 
   /**
-   * @param {{ full_name: string; }} client
+   * @param {ClientModel} client
    */
   function clientsSelection (client) {
     return {
       id: true,
       full_name: true,
       order_by: client.full_name,
+      filter: e.op(client.user.email, '=', locals.user.email),
     }
   }
 

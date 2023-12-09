@@ -6,7 +6,6 @@
   let isMobileMenuOpen = false
 </script>
 
-
 <div>
   <!-- Off-canvas menu for mobile -->
   <div class="{isMobileMenuOpen ? '' : 'hidden'} relative z-40 md:hidden">

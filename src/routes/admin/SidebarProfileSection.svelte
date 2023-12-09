@@ -2,6 +2,7 @@
   import { page } from "$app/stores"
 
   export let staticSidebar
+
   let isStatic = staticSidebar
 </script>
 

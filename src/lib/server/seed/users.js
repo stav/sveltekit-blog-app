@@ -10,10 +10,6 @@ export async function addUsers() {
 
   // @ts-ignore
   let addUser = async (user) => {
-    if (!user.role) {
-      user.role = "user"
-    }
-
     user.avatar_src = "/images/avatars/" + user.username + ".jpeg"
     user.user_auth_token = crypto.randomUUID() // these hashes used for read-only mode
 

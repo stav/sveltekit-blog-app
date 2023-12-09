@@ -41,6 +41,18 @@ type EdgedbModel = {
   created_at: datetime;
 }
 
+type ClientModel = {
+  email: string;
+  phone: string;
+  last_name: string;
+  first_name: string;
+  full_name: string;
+  company_name: string;
+  status: string;
+  jobs: string;
+  user: UserModel;
+} & EdgedbModel
+
 type JobModel = {
   client: ClientModel;
   tags: TagModel[];
