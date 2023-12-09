@@ -12,7 +12,6 @@ export const load = async ({ locals, cookies }) => {
       username: true,
       first_name: true,
       last_name: true,
-      role: true,
       filter_single: { user_auth_token: cookies.get("session") },
     }),
   }

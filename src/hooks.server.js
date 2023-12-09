@@ -1,4 +1,3 @@
-//import type { Handle } from '@sveltejs/kit'
 import { User } from "$lib/server/database.js"
 
 let signinRedirect = () => {

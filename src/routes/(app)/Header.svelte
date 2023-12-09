@@ -18,7 +18,7 @@
         <div class="ml-10 hidden space-x-8 lg:block">
           <a
             href="/"
-            class="text-xl  font-extrabold text-white hover:text-sky-50"
+            class="text-xl font-extrabold text-white hover:text-sky-50"
             >SVELTEKIT BLOG APP</a
           >
         </div>
@@ -30,9 +30,7 @@
         {:else}
           <a class={t.white_button} href="/jobs">Jobs</a>
 
-          {#if $page.data.user.role === "admin"}
-            <a href="/admin" class={t.white_button}>Admin</a>
-          {/if}
+          <a href="/admin" class={t.white_button}>Admin</a>
 
           <a class={t.white_button} href="/user/settings">Settings</a>
 

@@ -31,11 +31,11 @@ export const actions = {
     let user = await User.select({
       id: true,
       password_hash: true,
-      role: true,
       user_auth_token: true,
       filter_single: { email: email },
     })
 
+    // This needs love
     let credential_error = { error: "Invalid email or password" }
     if (!user) {
       return fail(400, credential_error)
@@ -65,10 +65,6 @@ export const actions = {
       // set cookie to expire after a month
       maxAge: 60 * 60 * 24 * 30,
     })
-
-    if (user.role === "admin") {
-      throw redirect(307, "/admin")
-    }
 
     throw redirect(307, "/")
   },
