@@ -1,9 +1,8 @@
 import { User } from "$lib/server/database.js"
-import { getBody } from '$lib/server/request.js'
 
 export function load({ cookies }) {
   return {
-    items: User.select((user) => ({
+    items: User.select((/** @type {any} */ user) => ({
       id: true,
       email: true,
       username: true,
@@ -16,7 +15,7 @@ export function load({ cookies }) {
   }
 }
 
-let getForm = (data) => {
+let getForm = (/** @type {FormData} */ data) => {
   return {
     username: data.get("username"),
     first_name: data.get("first_name"),
@@ -32,32 +31,32 @@ export const actions = {
     const data = await request.formData()
     try {
       await User.insert(getForm(data))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
   update: async ({ request }) => {
     const data = await request.formData()
     try {
-      await User.update((user) => ({
+      await User.update(() => ({
         filter_single: { id: data.get("id") },
         set: getForm(data),
       }))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       let form = getForm(data)
+      // @ts-ignore
       form.id = data.get("id")
       return { error: error.message, form: form }
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('users (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
     try {
       result = await User.delete({ filter_single: { id } })
-    } catch (error) {
-      // @ts-ignore
+    } catch (/** @type {any} */ error) {
       return { error: error.message }
     }
     console.info('delete', {result})

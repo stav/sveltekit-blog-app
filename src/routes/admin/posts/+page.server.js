@@ -1,9 +1,8 @@
 import { Post, User, Tag } from "$lib/server/database.js"
-import { getBody } from "$lib/server/request"
 
 export function load({ cookies }) {
   return {
-    items: Post.select((post) => ({
+    items: Post.select((/** @type {any} */ post) => ({
       id: true,
       title: true,
       slug: true,
@@ -14,12 +13,12 @@ export function load({ cookies }) {
       image_src: true,
       order_by: post.title,
     })),
-    users: User.select((user) => ({
+    users: User.select((/** @type {any} */ user) => ({
       id: true,
       username: true,
       order_by: user.username,
     })),
-    tags: Tag.select((tag) => ({
+    tags: Tag.select((/** @type {any} */ tag) => ({
       id: true,
       name: true,
       order_by: tag.name,
@@ -27,7 +26,7 @@ export function load({ cookies }) {
   }
 }
 
-let getForm = (data) => {
+let getForm = (/** @type {any} */ data) => {
   return {
     title: data.get("title"),
     slug: data.get("slug"),
@@ -39,7 +38,7 @@ let getForm = (data) => {
   }
 }
 
-let getPost = (data) => {
+let getPost = (/** @type {any} */ data) => {
   let f = getForm(data)
   return {
     title: f.title,
@@ -59,31 +58,32 @@ export const actions = {
     const data = await request.formData()
     try {
       await Post.insert(getPost(data))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
   update: async ({ request }) => {
     const data = await request.formData()
     try {
-      await Post.update((post) => ({
+      await Post.update(() => ({
         filter_single: { id: data.get("id") },
         set: getPost(data),
       }))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       let form = getForm(data)
+      // @ts-ignore
       form.id = data.get("id")
       return { error: error.message, form: form }
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('posts (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
     try {
       result = await Post.delete({ filter_single: { id } })
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       // @ts-ignore
       return { error: error.message }
     }

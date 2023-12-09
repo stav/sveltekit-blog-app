@@ -1,5 +1,4 @@
 import { Job, Tag, Payment, e } from "$lib/server/database.js"
-import { getBody } from '$lib/server/request.js'
 
 export function load({ locals }) {
   return {
@@ -22,7 +21,7 @@ export function load({ locals }) {
   }
 }
 
-let getForm = (/** @type {any} */ data) => {
+let getForm = (/** @type {FormData} */ data) => {
   return {
     job: data.get("job"),
     date: data.get("date"),
@@ -31,7 +30,7 @@ let getForm = (/** @type {any} */ data) => {
   }
 }
 
-let getPayment = (/** @type {any} */ data) => {
+let getPayment = (/** @type {FormData} */ data) => {
   let f = getForm(data)
   const job = Job.select_query({ filter_single: { id: f.job } })
 
@@ -45,7 +44,7 @@ let getPayment = (/** @type {any} */ data) => {
 
 export const actions = {
   create: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const payment = getPayment(data)
     try {
       await Payment.insert(payment)
@@ -54,7 +53,7 @@ export const actions = {
     }
   },
   update: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     try {
       await Payment.update(() => ({
@@ -69,7 +68,7 @@ export const actions = {
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('jobs (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result

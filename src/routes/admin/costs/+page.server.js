@@ -1,5 +1,4 @@
 import { Job, Cost, e } from "$lib/server/database.js"
-import { getBody } from '$lib/server/request.js'
 
 export function load({ locals, url }) {
   /**
@@ -51,7 +50,7 @@ export function load({ locals, url }) {
 }
 
 /**
- * @param {import("url").URLSearchParams} data
+ * @param {FormData} data
  */
 function getForm (data) {
   return {
@@ -66,7 +65,7 @@ function getForm (data) {
 }
 
 /**
- * @param {import("url").URLSearchParams} data
+ * @param {FormData} data
  */
 function getCost (data) {
   let f = getForm(data)
@@ -84,7 +83,7 @@ function getCost (data) {
 
 export const actions = {
   create: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const cost = getCost(data)
     try {
       await Cost.insert(cost)
@@ -93,7 +92,7 @@ export const actions = {
     }
   },
   update: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     try {
       await Cost.update(() => ({
@@ -108,7 +107,7 @@ export const actions = {
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('jobs (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result

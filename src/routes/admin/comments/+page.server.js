@@ -1,21 +1,20 @@
 import { Comment, User, Post } from "$lib/server/database.js"
-import { getBody } from "$lib/server/request"
 
 export function load() {
   return {
-    items: Comment.select((comment) => ({
+    items: Comment.select((/** @type {any} */ comment) => ({
       id: true,
       content: true,
       author: { username: true, avatar_src: true, id: true },
       post: { title: true, id: true },
       order_by: comment.created_at,
     })),
-    users: User.select((user) => ({
+    users: User.select((/** @type {any} */ user) => ({
       id: true,
       username: true,
       order_by: user.username,
     })),
-    posts: Post.select((post) => ({
+    posts: Post.select((/** @type {any} */ post) => ({
       id: true,
       title: true,
       order_by: post.title,
@@ -23,7 +22,7 @@ export function load() {
   }
 }
 
-let getForm = (data) => {
+let getForm = (/** @type {FormData} */ data) => {
   return {
     content: data.get("content"),
     author: data.get("author"),
@@ -31,7 +30,7 @@ let getForm = (data) => {
   }
 }
 
-let getComment = (data) => {
+let getComment = (/** @type {FormData} */ data) => {
   let f = getForm(data)
   let options = {
     content: f.content,
@@ -50,32 +49,32 @@ export const actions = {
     const data = await request.formData()
     try {
       await Comment.insert(getComment(data))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       return { error: error.message, form: getForm(data) }
     }
   },
   update: async ({ request }) => {
     const data = await request.formData()
     try {
-      await Comment.update((comment) => ({
+      await Comment.update(() => ({
         filter_single: { id: data.get("id") },
         set: getComment(data),
       }))
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       let form = getForm(data)
+      // @ts-ignore
       form.id = data.get("id")
       return { error: error.message, form: getForm(data) }
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('comments (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
     try {
       result = await Comment.delete({ filter_single: { id } })
-    } catch (error) {
-      // @ts-ignore
+    } catch (/** @type {any} */ error) {
       return { error: error.message }
     }
     console.info('delete', {result})

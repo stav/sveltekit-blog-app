@@ -1,5 +1,4 @@
 import { Client, Job, e } from "$lib/server/database.js"
-import { getBody } from '$lib/server/request.js'
 
 export function load({ locals }) {
   /**
@@ -34,7 +33,7 @@ export function load({ locals }) {
   }
 }
 
-let getForm = (/** @type {import("url").URLSearchParams} */ data) => {
+let getForm = (/** @type {FormData} */ data) => {
   return {
     title: data.get("title"),
     client: data.get("client"),
@@ -43,7 +42,7 @@ let getForm = (/** @type {import("url").URLSearchParams} */ data) => {
   }
 }
 
-let getJob = (/** @type {import("url").URLSearchParams} */ data) => {
+let getJob = (/** @type {FormData} */ data) => {
   let f = getForm(data)
   return {
     title: f.title,
@@ -57,7 +56,7 @@ let getJob = (/** @type {import("url").URLSearchParams} */ data) => {
 
 export const actions = {
   create: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     try {
       await Job.insert(getJob(data))
     } catch (/** @type {any} */ error) {
@@ -65,7 +64,7 @@ export const actions = {
     }
   },
   update: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     try {
       await Job.update(() => ({
@@ -80,7 +79,7 @@ export const actions = {
     }
   },
   delete: async ({ request }) => {
-    const data = await getBody(request)
+    const data = await request.formData()
     const id = data.get("id")
     console.info('jobs (delete):', {id, data, bodyUsed: request.bodyUsed});
     let result
