@@ -12,7 +12,7 @@
 
   let items = [
     { href: "/", icon: "outline/home", label: "Frontend" },
-    { href: "/admin/clients", icon: "outline/users", label: "Clients" },
+    { href: "/admin/clients", icon: "clients", label: "Clients" },
   ]
   if (numClients > 0) {
     items.push({ href: "/admin/jobs", icon: "wrench", label: "Jobs" })
@@ -22,10 +22,11 @@
     items.push({ href: "/admin/payments", icon: "banknotes", label: "Payments" })
   }
   const adminItems = [
-    { href: "/admin/users", icon: "outline/users", label: "Users" },
-    { href: "/admin/tags", icon: "outline/key", label: "Tags" },
-    { href: "/admin/posts", icon: "outline/folder", label: "Posts" },
-    { href: "/admin/comments", icon: "outline/inbox", label: "Comments" },
+    { href: "/admin/users", icon: "users", label: "Users" },
+    { href: "/admin/tags", icon: "tags", label: "Tags" },
+    { href: "/admin/posts", icon: "posts", label: "Posts" },
+    { href: "/admin/comments", icon: "comments", label: "Comments" },
+    { href: "/admin/export", icon: "download", label: "Export" },
   ]
   if ($page.data.user.role === 'admin') {
     items.push(...adminItems)
