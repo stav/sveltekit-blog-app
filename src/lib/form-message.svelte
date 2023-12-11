@@ -1,14 +1,12 @@
 <script>
   import { Alert } from 'flowbite-svelte';
 
-  /**
-   * @type {{ error: any; success: any; }}
-   */
+  /** @type {any} */
    export let form
 </script>
 
 {#if form?.error}
-    <Alert border>
+    <Alert border color="red">
       <span class="font-bold">Info alert!</span>
       <span class="block sm:inline">{form.error}</span>
     </Alert>

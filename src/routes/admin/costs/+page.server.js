@@ -25,7 +25,7 @@ export function load({ locals, url }) {
       vendor: true,
       amount: true,
       tax: true,
-      order_by: [cost.job.client.full_name, cost.job, cost.job_date],
+      order_by: [cost.job.client.full_name, cost.job.title, cost.job_date],
       filter: e.all( e.set(...filters) ),
     }
   }

@@ -15,7 +15,7 @@ export function load({ locals }) {
       total_cost: true,
       total_earn: true,
       tags: { name: true },
-      order_by: job.client.full_name,
+      order_by: [job.client.full_name, job.title],
       filter: e.op(job.client.user.email, '=', locals.user.email),
     }
   }
