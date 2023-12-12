@@ -34,3 +34,12 @@ export async function load({ locals }) {
     },
   }
 }
+
+export const actions = {
+  upload: async ({ request, cookies, params }) => {
+    const data = await request.formData()
+    const file = data?.get('file')
+    console.log({data, file})
+    return { success: true }
+  },
+}
