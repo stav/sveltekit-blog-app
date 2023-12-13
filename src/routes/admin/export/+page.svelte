@@ -1,7 +1,7 @@
 <script>
-  import { onMount } from 'svelte'
-  import { Badge, Button, Heading, Label, Alert } from 'flowbite-svelte'
-  import { DownloadOutline, FileExportOutline, FileImportOutline } from 'flowbite-svelte-icons'
+  import { onMount } from "svelte"
+  import { Badge, Button, Fileupload, Heading, Label, Alert } from "flowbite-svelte"
+  import { DownloadOutline, FileExportOutline, FileImportOutline } from "flowbite-svelte-icons"
 
   export let data
 
@@ -10,25 +10,59 @@
   /** @type {string} */
   let url
 
-	/** @type {FileList} */
-	let files
+  /** @type {FileList} */
+  let files
 
   let message = ''
 
-	onMount(() => {
-    const blob = new Blob([data.clients.json], { type: 'application/json;charset=utf-8' })
+  let jsonContents = ''
+
+  onMount(() => {
+    const blob = new Blob([data.clients.json], {
+      type: "application/jsoncharset=utf-8",
+    })
     url = URL.createObjectURL(blob)
-	});
+  })
+
+  /**
+   * @this {any}
+   */
+  function parseFileContents () {
+    if (this.files) { // this.files is the same as arg event.target.files
+      /** @type {File} */
+      const file = this.files[0]
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        form = null
+        message = ''
+        try {
+          // Show file contents
+          jsonContents = file.size + ' ' + file.type + '\n'
+          let fileContents = e.target?.result?.toString() ?? ''
+          jsonContents += fileContents
+
+          // Format content as JSON
+          const obj = JSON.parse(fileContents)
+          fileContents = JSON.stringify(obj, null, '    ')
+          jsonContents = file.size + ' ' + file.type + '\n' + fileContents.substring(0, 1024)
+        }
+        catch (/** @type any */ error) {
+          message = error.message
+        }
+      }
+      reader.readAsBinaryString(file)
+    }
+  }
 </script>
 
 <Heading tag="h3" class="mb-4">
-  <Badge class="m-2 p-2"> <DownloadOutline /> </Badge>
+  <Badge class="m-2 p-2"><DownloadOutline /></Badge>
   Import / Export
 </Heading>
 
 <div class="container mb-4 p-2 border-2 rounded-lg">
   <Badge class="mb-2">JSON</Badge> Export <br />
-  <a href="{url}" download="coster-export-clients.json">
+  <a href={url} download="coster-export-clients.json">
     <Button>
       <FileExportOutline class="w-3.5 h-3.5 me-2" />
       Export {data.clients.length} Clients
@@ -39,16 +73,11 @@
 
 <div class="container mb-4 p-2 border-2 rounded-lg">
   <Badge class="mb-1">JSON</Badge> Import <br />
-  <form method="post" action="?/upload" enctype="multipart/form-data" class="inline">
+
+  <form method="POST" action="?/upload" enctype="multipart/form-data">
     <Label class="space-y-2 mb-2">
       <span>Upload client data to server and import into database.</span>
-      <!-- Can't use Fileupload component because the binding lags behind the onChange call -->
-      <!-- import { Fileupload } from 'flowbite-svelte' -->
-      <!-- <Fileupload name="file" bind:files={files} accept=".json" on:change={papa} /> -->
-      <input
-        type="file" name="file" bind:files accept=".json"
-        class="block w-full disabled:cursor-not-allowed disabled:opacity-50 p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg border !p-0 dark:text-gray-400"
-      />
+      <Fileupload name="file" bind:files accept=".json" on:change={parseFileContents} />
     </Label>
     {#if files && !message}
       <Button type="submit">
@@ -57,6 +86,7 @@
       </Button>
     {/if}
   </form>
+
   {#if message}
     <Alert border class="mt-2">
       <strong class="font-bold">Warning</strong>
@@ -68,4 +98,6 @@
       <span class="block sm:inline">Data uploaded and imported into db.</span>
     </Alert>
   {/if}
+
+  <pre class="mt-2">{jsonContents}</pre>
 </div>
