@@ -26,7 +26,7 @@
     { href: "/admin/tags", icon: "tags", label: "Tags" },
     { href: "/admin/posts", icon: "posts", label: "Posts" },
     { href: "/admin/comments", icon: "comments", label: "Comments" },
-    { href: "/admin/export", icon: "download", label: "Export" },
+    { href: "/admin/export", icon: "download", label: "Import / Export" },
   ]
   if ($page.data.user.role === 'admin') {
     items.push(...adminItems)

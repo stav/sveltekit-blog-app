@@ -7,6 +7,9 @@ export { e }
 export let edbc = edgedb.createClient()
 
 class Database {
+  static async query(query) {
+    return await edbc.queryJSON(query)
+  }
   static async select(params) {
     const query = e.select(this.type, params)
     return await query.run(edbc)
