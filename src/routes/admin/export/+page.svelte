@@ -92,10 +92,17 @@
       <strong class="font-bold">Warning</strong>
       <span class="block sm:inline">{message}</span>
     </Alert>
-  {:else if form?.success}
+  {/if}
+  {#if form?.success}
     <Alert border color="green" class="mt-2">
       <strong class="font-bold">Success!</strong>
-      <span class="block sm:inline">Data uploaded and imported into db.</span>
+      <span class="block sm:inline">{form.success}</span>
+    </Alert>
+  {/if}
+  {#if form?.error}
+    <Alert border color="red" class="mt-2">
+      <strong class="font-bold">Error!</strong>
+      <span class="block sm:inline">{form.error}</span>
     </Alert>
   {/if}
 

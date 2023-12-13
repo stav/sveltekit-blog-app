@@ -35,17 +35,17 @@ export async function load({ locals }) {
 }
 
 const fields = [
-  'id',
+  // 'id',
   'created_at',
   'email',
   'phone',
   'last_name',
   'first_name',
-  'full_name',
+  // 'full_name',
   'company_name',
   'status',
-  'jobs',
-  'user',
+  // 'jobs',
+  // 'user',
 ]
 
 /**
@@ -78,17 +78,33 @@ export const actions = {
     const name = file?.name
     // @ts-ignore
     const text = await file?.text()
-    const objs = JSON.parse(text)
-    console.log(objs.length)
+    let objs = JSON.parse(text)
+    if (objs.length === undefined) {
+      objs = [objs]
+    }
+    const ids = []
+    console.log(objs.length, 'object')
     for (let i = 0; i < objs.length; i++) {
       const element = objs[i]
-      const model = getModel(element)
       const instance = isModel(element)
-      console.log({i, name, element, instance, model})
+      console.log({i, name, element, instance})
       if (isModel(element)) {
-        // insert into db
+        const model = getModel(element)
+        console.log('yes!model', model)
+        try {
+          const result = await Client.insert(model)
+          ids.push(result.id)
+        }
+        catch (/** @type {any} */ error) {
+          return { error: `Inserted ${ids.length} Clients ${ids} and got this error: ${error.message}` }
+        }
       }
     }
-    return { success: true }
-  },
+    if (ids.length > 0) {
+      const success = `${ids.length} Client record${ids.length > 1 ? 's' : ''} inserted: [${ids}]`
+      console.log(success)
+      return { success }
+    }
+    return { error: 'No records inserted.'}
+  }
 }
