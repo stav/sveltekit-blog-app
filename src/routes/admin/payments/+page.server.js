@@ -9,14 +9,14 @@ export function load({ locals }) {
       amount: true,
       description: true,
       order_by: payment.date,
-      filter: e.op(payment.job.client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(payment.job.client.user.email, '=', locals.user.email),
     })),
     jobs: Job.select((/** @type {any} */ job) => ({
       id: true,
       title: true,
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
-      filter: e.op(job.client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(job.client.user.email, '=', locals.user.email),
     })),
   }
 }

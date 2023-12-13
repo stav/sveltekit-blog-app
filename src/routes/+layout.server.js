@@ -8,7 +8,7 @@ export const load = async ({ locals }) => {
   function clientSelection (client) {
     return {
       full_name: true,
-      filter: e.op(client.user.email, '=', locals.user?.email || ''),
+      filter: locals.user.role == 'admin' ? null : e.op(client.user.email, '=', locals.user?.email || ''),
     }
   }
   /**
@@ -17,7 +17,7 @@ export const load = async ({ locals }) => {
   function jobSelection (job) {
     return {
       title: true,
-      filter: e.op(job.client.user.email, '=', locals.user?.email || ''),
+      filter: locals.user.role == 'admin' ? null : e.op(job.client.user.email, '=', locals.user?.email || ''),
     }}
 
   return {

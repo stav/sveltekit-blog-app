@@ -13,7 +13,7 @@ export function load({ locals }) {
       beg_date: true,
       end_date: true,
       order_by: job.client.full_name,
-      filter: e.op(job.client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(job.client.user.email, '=', locals.user.email),
     }
   }
 
@@ -25,7 +25,7 @@ export function load({ locals }) {
       id: true,
       full_name: true,
       order_by: client.full_name,
-      filter: e.op(client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(client.user.email, '=', locals.user.email),
     }
   }
 

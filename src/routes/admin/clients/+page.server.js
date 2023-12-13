@@ -21,7 +21,7 @@ export function load({ locals }) {
       jobs: true,
       user: { email: true },
       order_by: client.full_name,
-      filter: e.op(client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(client.user.email, '=', locals.user.email),
     }
   }
 

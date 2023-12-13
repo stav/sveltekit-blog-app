@@ -5,11 +5,14 @@ export function load({ locals, url }) {
    * @param {CostModel} cost
    */
   function costSelection(cost) {
-    const filters = []
+    const filters = [e.op(true, '=', true)]
 
-    const userFilter = e.op(cost.job.client.user.email, '=', locals.user.email)
-    filters.push(userFilter)
-
+    // Filter based on user role (admin sees everything)
+    if (locals.user.role !== 'admin') {
+      const userFilter = e.op(cost.job.client.user.email, '=', locals.user.email)
+      filters.push(userFilter)
+    }
+    // Filter based on selected job id
     const selectedJobId = url.searchParams.get("job")
     if (selectedJobId) {
       const jobIdFilter = e.op(cost.job.id, "=", e.uuid(selectedJobId))
@@ -39,7 +42,7 @@ export function load({ locals, url }) {
       title: true,
       client: { full_name: true },
       order_by: [job.client.full_name, job.title],
-      filter: e.op(job.client.user.email, '=', locals.user.email),
+      filter: locals.user.role == 'admin' ? null : e.op(job.client.user.email, '=', locals.user.email),
     }
   }
 
