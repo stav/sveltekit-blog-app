@@ -49,7 +49,7 @@ type ClientModel = {
   full_name: string;
   company_name: string;
   status: string;
-  jobs: string;
+  jobs: JobModel[];
   user: UserModel;
 } & EdgedbModel
 
@@ -83,3 +83,8 @@ type PaymentModel = {
   amount: string;
   date: string;
 } & EdgedbModel
+
+interface TransientModel {[key: string]: string}
+// https://stackoverflow.com/questions/51308712
+interface Property<T> {[index]: T }
+type PropertyBag<T> = { [P in keyof T]: Property<T[P]> }
