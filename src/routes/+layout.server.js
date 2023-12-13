@@ -2,6 +2,10 @@ import { Client, Job, e } from "$lib/server/database.js"
 
 export const load = async ({ locals }) => {
 
+  if (!locals.user) {
+    locals.user = {}
+  }
+
   /**
    * @param {ClientModel} client
    */
