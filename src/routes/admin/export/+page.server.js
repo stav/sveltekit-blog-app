@@ -1,5 +1,5 @@
 import { Client } from "$lib/server/database.js"
-import { Clients, isClientModel, insertClientModel } from "./Clients.js"
+import { Clients, isClientModel, insertClientModelForUser } from "./Clients.js"
 import { objectsFromRequestJson } from "./Requests.js"
 
 /** @returns LoadedClientData */
@@ -18,7 +18,7 @@ export const actions = {
   /**
    * Upload the provided data objects and import them into the database.
    */
-  upload: async ({ request }) => {
+  upload: async ({ request, locals }) => {
     const ids = []
     const objects = await objectsFromRequestJson(request)
 
@@ -26,7 +26,7 @@ export const actions = {
     for (const object of objects) {
       if (isClientModel(object)) {
         try {
-          const result = await insertClientModel(object)
+          const result = await insertClientModelForUser(object, locals.user)
           ids.push(result.id)
         }
         catch (/** @type {any} */ error) {

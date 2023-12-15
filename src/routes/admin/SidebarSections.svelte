@@ -21,12 +21,14 @@
     items.push({ href: "/admin/costs", icon: "currency", label: "Costs" })
     items.push({ href: "/admin/payments", icon: "banknotes", label: "Payments" })
   }
+  if (numClients > 0) {
+    items.push({ href: "/admin/export", icon: "download", label: "Import / Export" })
+  }
   const adminItems = [
     { href: "/admin/users", icon: "users", label: "Users" },
     { href: "/admin/tags", icon: "tags", label: "Tags" },
     { href: "/admin/posts", icon: "posts", label: "Posts" },
     { href: "/admin/comments", icon: "comments", label: "Comments" },
-    { href: "/admin/export", icon: "download", label: "Import / Export" },
   ]
   if ($page.data.user.role === 'admin') {
     items.push(...adminItems)

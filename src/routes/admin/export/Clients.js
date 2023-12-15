@@ -1,4 +1,4 @@
-import { Client, e } from "$lib/server/database.js"
+import { Client, User, e } from "$lib/server/database.js"
 
 /**
  * @param {any} user
@@ -33,9 +33,10 @@ export async function Clients(user) {
 
 /**
  * @param {any} object
+ * @param {any} user
  * @returns {ClientModel}
  */
-function getClientModel (object) {
+function getClientModelForuser (object, user) {
   const fields = [
     'company_name',
     'first_name',
@@ -50,6 +51,9 @@ function getClientModel (object) {
   for (const field of fields) {
     model[field] = object[field]
   }
+  model.user = User.select_query({
+    filter_single: { email: user.email }
+  })
   // @ts-ignore
   return model
 }
@@ -73,10 +77,11 @@ export function isClientModel (object) {
 
 /**
  * @param {ClientModel} object
+ * @param {any} user
  * @returns {Promise<{ id: typeof e.uuid}>}
  */
-export async function insertClientModel (object) {
-  const client = getClientModel(object)
+export async function insertClientModelForUser (object, user) {
+  const client = getClientModelForuser(object, user)
   console.log('yes!client', client)
   return Client.insert(client)
 }
