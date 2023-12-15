@@ -32,6 +32,17 @@ export async function Clients(user) {
 }
 
 /**
+ * @param {any} user
+ */
+export async function ClientsAsJson(user) {
+  return await Client.queryJSON(`
+    select default::Client {*, jobs: {**}}
+    filter .user.email = "${user.email}"
+    ;
+  `)
+}
+
+/**
  * @param {any} object
  * @param {any} user
  * @returns {ClientModel}

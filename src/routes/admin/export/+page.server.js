@@ -1,15 +1,20 @@
-import { Client } from "$lib/server/database.js"
-import { Clients, isClientModel, insertClientModelForUser } from "./Clients.js"
 import { objectsFromRequestJson } from "./Requests.js"
+import {
+  Clients,
+  ClientsAsJson,
+  insertClientModelForUser,
+  isClientModel,
+} from "./Clients.js"
 
 /** @returns LoadedClientData */
 export async function load({ locals }) {
   const clients = await Clients(locals.user)
+  const json = await ClientsAsJson(locals.user)
 
   return {
     clients: {
       length: clients.length,
-      json: await Client.query('select default::Client {*, jobs: {**}}'),
+      json,
     },
   }
 }

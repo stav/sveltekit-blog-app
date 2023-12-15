@@ -7,7 +7,7 @@ export { e }
 export let edbc = edgedb.createClient()
 
 class Database {
-  static async query(query) {
+  static async queryJSON(query) {
     return await edbc.queryJSON(query)
   }
   static async select(params) {
