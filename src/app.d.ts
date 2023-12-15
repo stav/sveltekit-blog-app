@@ -84,7 +84,7 @@ type PaymentModel = {
   date: string;
 } & EdgedbModel
 
-interface TransientModel {[key: string]: string}
+interface TransientModel {[key: string]: any}
 // https://stackoverflow.com/questions/51308712
 interface Property<T> {[index]: T }
 type PropertyBag<T> = { [P in keyof T]: Property<T[P]> }

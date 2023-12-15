@@ -34,30 +34,24 @@ export async function load({ locals }) {
   }
 }
 
-const fields = [
-  // 'id',
-  'created_at',
-  'email',
-  'phone',
-  'last_name',
-  'first_name',
-  // 'full_name',
-  'company_name',
-  'status',
-  // 'jobs',
-  // 'user',
-]
-
 /**
- * @param {any} element
+ * @param {any} object
  * @returns {ClientModel}
  */
-function getModel (element) {
+function getClientModel (object) {
+  const fields = [
+    'company_name',
+    'first_name',
+    'last_name',
+    'status',
+    'email',
+    'phone',
+  ]
   /** @type {TransientModel} */
   const model = {}
 
   for (const field of fields) {
-    model[field] = element[field]
+    model[field] = object[field]
   }
   // @ts-ignore
   return model
@@ -65,34 +59,62 @@ function getModel (element) {
 
 /**
  * @param {any} object
+ * @returns {boolean}
  */
-function isModel (object) {
+function isClientModel (object) {
+  const fields = [
+    'company_name',
+    'first_name',
+    'last_name',
+    'status',
+    'email',
+    'phone',
+    'jobs',
+  ]
   return fields.every(field => Object.hasOwn(object, field))
 }
 
+/**
+ * @param {ClientModel} object
+ * @returns {Promise<{ id: typeof e.uuid}>}
+ */
+async function insertClientModel (object) {
+  const client = getClientModel(object)
+  console.log('yes!client', client)
+  return Client.insert(client)
+}
+
 export const actions = {
+  /**
+   * Upload the provided data objects and import them into the database.
+   */
   upload: async ({ request }) => {
+    // Pull file from Request
     const data = await request.formData()
     const file = data?.get('file')
     // @ts-ignore
     const name = file?.name
     // @ts-ignore
     const text = await file?.text()
-    let objs = JSON.parse(text)
-    if (objs.length === undefined) {
-      objs = [objs]
+
+    // Parse file contents as JSON
+    let objects = JSON.parse(text)
+    if (objects.length === undefined) {
+      objects = [objects]
     }
+    console.log(objects.length, 'object')
+
     const ids = []
-    console.log(objs.length, 'object')
-    for (let i = 0; i < objs.length; i++) {
-      const element = objs[i]
-      const instance = isModel(element)
-      console.log({i, name, element, instance})
-      if (isModel(element)) {
-        const model = getModel(element)
-        console.log('yes!model', model)
+
+    // Spin thru the requested data objects
+    for (let i = 0; i < objects.length; i++) {
+      const object = objects[i]
+      const instance = isClientModel(object)
+      console.log({i, name, object, instance})
+
+      if (isClientModel(object)) {
         try {
-          const result = await Client.insert(model)
+          const result = await insertClientModel(object)
           ids.push(result.id)
         }
         catch (/** @type {any} */ error) {
@@ -100,6 +122,8 @@ export const actions = {
         }
       }
     }
+
+    // Verify success or failure
     if (ids.length > 0) {
       const success = `${ids.length} Client record${ids.length > 1 ? 's' : ''} inserted: [${ids}]`
       console.log(success)
