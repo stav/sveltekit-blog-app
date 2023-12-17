@@ -42,3 +42,9 @@ Then navigate to the root directory of the app to automatically seed the databas
 You can then login to the admin pages with:
 * email: `admin@example.com`
 * password: `password`
+
+## Features
+
+### Export
+
+https://stackoverflow.com/questions/14964035#answer-68146412
